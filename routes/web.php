@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CadastroController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,4 +42,10 @@ Route::middleware([
 
     // Endpoint para recuperar os dados do usuário
     Route::get('/api/user', [UserController::class, 'getUserData']);
+
+    Route::post('/cadastrar-usuario', [CadastroController::class, 'createCadastro'])->name('cadastrar.usuario');
+
+    Route::get('/cadastrados', [CadastroController::class, 'getAllCadastro']);
+
 });
+

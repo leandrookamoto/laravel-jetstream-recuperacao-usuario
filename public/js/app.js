@@ -74,6 +74,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -90,18 +94,415 @@ function HelloReact() {
     _useState2 = _slicedToArray(_useState, 2),
     usuario = _useState2[0],
     setUsuario = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(true),
+    _useState4 = _slicedToArray(_useState3, 2),
+    cadastrar = _useState4[0],
+    setCadastrar = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState6 = _slicedToArray(_useState5, 2),
+    setor = _useState6[0],
+    setSetor = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+    _useState8 = _slicedToArray(_useState7, 2),
+    listaCadastro = _useState8[0],
+    setListaCadastro = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState10 = _slicedToArray(_useState9, 2),
+    selectedDate = _useState10[0],
+    setSelectedDate = _useState10[1];
+
+  //Variáveis para as notas
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState12 = _slicedToArray(_useState11, 2),
+    nome = _useState12[0],
+    setNome = _useState12[1];
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState14 = _slicedToArray(_useState13, 2),
+    email = _useState14[0],
+    setEmail = _useState14[1];
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState16 = _slicedToArray(_useState15, 2),
+    nota1 = _useState16[0],
+    setNota1 = _useState16[1];
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState18 = _slicedToArray(_useState17, 2),
+    nota2 = _useState18[0],
+    setNota2 = _useState18[1];
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState20 = _slicedToArray(_useState19, 2),
+    nota3 = _useState20[0],
+    setNota3 = _useState20[1];
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState22 = _slicedToArray(_useState21, 2),
+    nota4 = _useState22[0],
+    setNota4 = _useState22[1];
+  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState24 = _slicedToArray(_useState23, 2),
+    nota5 = _useState24[0],
+    setNota5 = _useState24[1];
+  var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState26 = _slicedToArray(_useState25, 2),
+    nota6 = _useState26[0],
+    setNota6 = _useState26[1];
+  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState28 = _slicedToArray(_useState27, 2),
+    nota7 = _useState28[0],
+    setNota7 = _useState28[1];
+  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState30 = _slicedToArray(_useState29, 2),
+    nota8 = _useState30[0],
+    setNota8 = _useState30[1];
+  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState32 = _slicedToArray(_useState31, 2),
+    nota9 = _useState32[0],
+    setNota9 = _useState32[1];
+  var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState34 = _slicedToArray(_useState33, 2),
+    nota10 = _useState34[0],
+    setNota10 = _useState34[1];
+
+  //Variáveis para os placeholders
+  var consideracao = 'Leve em consideração  a qualidade do trabalho realizado pelo funcionário, sua eficiência, precisão e produtividade.';
+  var tecnico = 'Analise o conhecimento técnico específico necessário para o cargo e como o funcionário está aplicando essas habilidades no trabalho.';
+  var profissional = ' Observe o profissionalismo do funcionário, incluindo sua ética de trabalho, relacionamento com colegas, atitude e comunicação.';
+  var interpessoal = 'Considere como o funcionário se relaciona com os colegas, clientes ou superiores. Avalie suas habilidades de trabalho em equipe, empatia e capacidade de resolver conflitos.';
+  var iniciativa = 'Avalie se o funcionário demonstra proatividade, capacidade de assumir responsabilidades e ações independentes para melhorar processos ou resolver problemas.';
+  var adaptavel = 'Considere a capacidade do funcionário de se adaptar a mudanças, lidar com novas situações e aprender com desafios.';
+  var pontualidade = 'Avalie a pontualidade do funcionário, sua presença no trabalho, e se cumpre prazos e compromissos.';
+  var objetivo = 'Verifique se o funcionário está alinhado com os objetivos da empresa e como suas ações contribuem para esses objetivos.';
+  var feedback = 'Analise como o funcionário lida com feedbacks anteriores e se ele implementou melhorias com base nessas sugestões.';
+  var desenvolvimento = 'Considere se o funcionário está buscando oportunidades de desenvolvimento, como participação em treinamentos, workshops ou outras atividades para aprimorar suas habilidades.';
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     axios.get('/user').then(function (response) {
-      // Os dados estão na propriedade 'data' da resposta
-      console.log(response.data.name);
       var usuarioLogado = response.data.name;
       setUsuario(usuarioLogado);
+
+      // Segunda requisição feita após o sucesso da primeira
+      axios.get('/cadastrados').then(function (response) {
+        var lista = response.data;
+        var listaFiltrada = lista.filter(function (item) {
+          return item.administrador === usuarioLogado;
+        });
+        console.log("Esta \xE9 a lista filtrada ".concat(listaFiltrada));
+        setListaCadastro(listaFiltrada);
+      })["catch"](function (error) {
+        // Tratar erros da segunda requisição, se necessário
+        console.error('Erro na segunda requisição:', error);
+      });
+    })["catch"](function (error) {
+      // Tratar erros da primeira requisição, se necessário
+      console.error('Erro na primeira requisição:', error);
     });
   }, []);
+  function gravar() {
+    if (!nome || !email || !setor) {
+      alert('Favor colocar todos os dados!');
+    } else {
+      var lista = [].concat(_toConsumableArray(listaCadastro), [{
+        nome: nome,
+        email: email,
+        setor: setor,
+        administrador: usuario
+      }]);
+      setListaCadastro(lista);
+      console.log(lista);
+      axios.post('/cadastrar-usuario', {
+        nome: nome,
+        email: email,
+        setor: setor,
+        administrador: usuario
+      }).then(function (response) {
+        console.log('Usuário cadastrado com sucesso:', response.data);
+        // Lidar com a resposta do servidor após o cadastro ser realizado com sucesso
+      })["catch"](function (error) {
+        console.error('Erro ao cadastrar usuário:', error);
+        // Lidar com erros que ocorreram durante o cadastro
+      });
+    }
+    setNome('');
+    setEmail('');
+    setSetor('');
+  }
+  ;
+  console.log(nota1);
+  function avaliar() {
+    // const novoObjeto = { ...listaCadastro[0], outraChave: { atributo1: 'valor1', atributo2: 'valor2' } };
+    // const novaLista = [...listaCadastro.slice(0, 1), novoObjeto, ...listaCadastro.slice(1)];
+    // setListaCadastro(novaLista);
+    // console.log(novaLista);
+
+    var media = (parseInt(nota1) + parseInt(nota2) + parseInt(nota3) + parseInt(nota4) + parseInt(nota5) + parseInt(nota6) + parseInt(nota7) + parseInt(nota8) + parseInt(nota9) + parseInt(nota10)) / 10;
+    console.log(media);
+  }
+  ;
+  var formatBrazilianDate = function formatBrazilianDate(date) {
+    var _date$split = date.split('-'),
+      _date$split2 = _slicedToArray(_date$split, 3),
+      year = _date$split2[0],
+      month = _date$split2[1],
+      day = _date$split2[2];
+    return "".concat(day, "/").concat(month, "/").concat(year);
+  };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
-      children: "Teste do hello!"
-    }), usuario]
+    children: [usuario, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("select", {
+      "class": "form-select",
+      "aria-label": "Default select example",
+      onChange: function onChange(e) {
+        return setCadastrar(e.currentTarget.value);
+      },
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+        selected: true,
+        children: "Escolha a op\xE7\xE3o"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+        value: "true",
+        children: "Cadastrar funcion\xE1rio"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+        value: "false",
+        children: "Fornecer feedback"
+      })]
+    }), cadastrar === 'true' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        "class": "mb-1 mt-6",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+          "for": "exampleFormControlInput1",
+          "class": "form-label",
+          children: "Nome"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+          "class": "form-control",
+          id: "exampleFormControlInput1",
+          placeholder: "Colocar o nome do funcion\xE1rio",
+          value: nome,
+          onChange: function onChange(e) {
+            return setNome(e.currentTarget.value);
+          }
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        "class": "mb-3",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+          "for": "exampleFormControlInput1",
+          "class": "form-label",
+          children: "E-mail"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+          "class": "form-control",
+          type: "email",
+          onChange: function onChange(e) {
+            return setEmail(e.currentTarget.value);
+          },
+          value: email,
+          id: "exampleFormControlInput1",
+          placeholder: "Colocar o e-mail de contato"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        "class": "mb-3",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+          "for": "exampleFormControlInput1",
+          "class": "form-label",
+          children: "Setor"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("select", {
+          "class": "form-select",
+          "aria-label": "Default select example",
+          onChange: function onChange(e) {
+            return setSetor(e.currentTarget.value);
+          },
+          value: setor,
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+            selected: true,
+            children: "Escolha a op\xE7\xE3o"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+            value: "Setor A",
+            children: "Setor A"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+            value: "Setor B",
+            children: "Setor B"
+          })]
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+        type: "button",
+        "class": "btn btn-primary",
+        onClick: gravar,
+        children: "Gravar"
+      }), listaCadastro.length > 0 && listaCadastro.map(function (item, index) {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("p", {
+            children: ["Nome: ", item.nome]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("p", {
+            children: ["Email: ", item.email]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("p", {
+            children: ["Setor: ", item.setor]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("p", {
+            children: ["Administrador: ", item.administrador]
+          })]
+        }, index);
+      })]
+    }), cadastrar === 'false' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        "class": "mb-5 mt-6",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+          "for": "exampleFormControlInput1",
+          "class": "form-label",
+          children: "Qual foi o desempenho do colaborador no trabalho?"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+          type: "number",
+          "class": "form-control",
+          id: "exampleFormControlInput1",
+          placeholder: consideracao,
+          onChange: function onChange(e) {
+            return setNota1(e.currentTarget.value);
+          }
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        "class": "mb-5",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+          "for": "exampleFormControlInput1",
+          "class": "form-label",
+          children: "Como est\xE3o as habilidades t\xE9cnicas e conhecimento?"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+          type: "number",
+          "class": "form-control",
+          id: "exampleFormControlInput1",
+          placeholder: tecnico,
+          onChange: function onChange(e) {
+            return setNota2(e.currentTarget.value);
+          }
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        "class": "mb-5",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+          "for": "exampleFormControlInput1",
+          "class": "form-label",
+          children: "Como est\xE1 o comportamento profissional?"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+          type: "number",
+          "class": "form-control",
+          id: "exampleFormControlInput1",
+          placeholder: profissional,
+          onChange: function onChange(e) {
+            return setNota3(e.currentTarget.value);
+          }
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        "class": "mb-5",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+          "for": "exampleFormControlInput1",
+          "class": "form-label",
+          children: "Como est\xE3o as habilidades interpessoais?"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+          type: "number",
+          "class": "form-control",
+          id: "exampleFormControlInput1",
+          placeholder: interpessoal,
+          onChange: function onChange(e) {
+            return setNota4(e.currentTarget.value);
+          }
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        "class": "mb-5",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+          "for": "exampleFormControlInput1",
+          "class": "form-label",
+          children: "O colaborador tem iniciativa e responsabilidade?"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+          type: "number",
+          "class": "form-control",
+          id: "exampleFormControlInput1",
+          placeholder: iniciativa,
+          onChange: function onChange(e) {
+            return setNota5(e.currentTarget.value);
+          }
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        "class": "mb-5",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+          "for": "exampleFormControlInput1",
+          "class": "form-label",
+          children: "\xC9 adapt\xE1vel e flex\xEDvel?"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+          type: "number",
+          "class": "form-control",
+          id: "exampleFormControlInput1",
+          placeholder: adaptavel,
+          onChange: function onChange(e) {
+            return setNota6(e.currentTarget.value);
+          }
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        "class": "mb-5",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+          "for": "exampleFormControlInput1",
+          "class": "form-label",
+          children: "\xC9 pontual?"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+          type: "number",
+          "class": "form-control",
+          id: "exampleFormControlInput1",
+          placeholder: pontualidade,
+          onChange: function onChange(e) {
+            return setNota7(e.currentTarget.value);
+          }
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        "class": "mb-5",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+          "for": "exampleFormControlInput1",
+          "class": "form-label",
+          children: "\xC9 alinhado com os objetivos e metas da empresa?"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+          type: "number",
+          "class": "form-control",
+          id: "exampleFormControlInput1",
+          placeholder: objetivo,
+          onChange: function onChange(e) {
+            return setNota8(e.currentTarget.value);
+          }
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        "class": "mb-5",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+          "for": "exampleFormControlInput1",
+          "class": "form-label",
+          children: "\xC9 aberto para os feedbacks?"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+          type: "number",
+          "class": "form-control",
+          id: "exampleFormControlInput1",
+          placeholder: feedback,
+          onChange: function onChange(e) {
+            return setNota9(e.currentTarget.value);
+          }
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        "class": "mb-5",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+          "for": "exampleFormControlInput1",
+          "class": "form-label",
+          children: "Busca o desenvolvimento profissional?"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+          type: "number",
+          "class": "form-control",
+          id: "exampleFormControlInput1",
+          placeholder: desenvolvimento,
+          onChange: function onChange(e) {
+            return setNota10(e.currentTarget.value);
+          }
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+        type: "date",
+        id: "data-pagamento",
+        name: "data_pagamento",
+        value: selectedDate,
+        onChange: function onChange(e) {
+          return setSelectedDate(e.currentTarget.value);
+        },
+        "class": "form-control"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("p", {
+        children: ["Selected Date: ", selectedDate ? formatBrazilianDate(selectedDate) : '']
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+        type: "button",
+        "class": "btn btn-primary",
+        onClick: avaliar,
+        children: "Avaliar Profissional"
+      })]
+    })]
   });
 }
 if (document.getElementById('hello-react')) {
