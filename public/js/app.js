@@ -136,6 +136,10 @@ function HelloReact() {
     _useState22 = _slicedToArray(_useState21, 2),
     idFuncionario = _useState22[0],
     setIdFuncionario = _useState22[1];
+  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState24 = _slicedToArray(_useState23, 2),
+    historico = _useState24[0],
+    setHistorico = _useState24[1];
 
   //Configuração do ChartJS
   var data = {
@@ -154,54 +158,54 @@ function HelloReact() {
   };
 
   //Variáveis para as notas
-  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
-    _useState24 = _slicedToArray(_useState23, 2),
-    nome = _useState24[0],
-    setNome = _useState24[1];
   var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState26 = _slicedToArray(_useState25, 2),
-    email = _useState26[0],
-    setEmail = _useState26[1];
+    nome = _useState26[0],
+    setNome = _useState26[1];
   var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState28 = _slicedToArray(_useState27, 2),
-    nota1 = _useState28[0],
-    setNota1 = _useState28[1];
+    email = _useState28[0],
+    setEmail = _useState28[1];
   var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState30 = _slicedToArray(_useState29, 2),
-    nota2 = _useState30[0],
-    setNota2 = _useState30[1];
+    nota1 = _useState30[0],
+    setNota1 = _useState30[1];
   var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState32 = _slicedToArray(_useState31, 2),
-    nota3 = _useState32[0],
-    setNota3 = _useState32[1];
+    nota2 = _useState32[0],
+    setNota2 = _useState32[1];
   var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState34 = _slicedToArray(_useState33, 2),
-    nota4 = _useState34[0],
-    setNota4 = _useState34[1];
+    nota3 = _useState34[0],
+    setNota3 = _useState34[1];
   var _useState35 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState36 = _slicedToArray(_useState35, 2),
-    nota5 = _useState36[0],
-    setNota5 = _useState36[1];
+    nota4 = _useState36[0],
+    setNota4 = _useState36[1];
   var _useState37 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState38 = _slicedToArray(_useState37, 2),
-    nota6 = _useState38[0],
-    setNota6 = _useState38[1];
+    nota5 = _useState38[0],
+    setNota5 = _useState38[1];
   var _useState39 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState40 = _slicedToArray(_useState39, 2),
-    nota7 = _useState40[0],
-    setNota7 = _useState40[1];
+    nota6 = _useState40[0],
+    setNota6 = _useState40[1];
   var _useState41 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState42 = _slicedToArray(_useState41, 2),
-    nota8 = _useState42[0],
-    setNota8 = _useState42[1];
+    nota7 = _useState42[0],
+    setNota7 = _useState42[1];
   var _useState43 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState44 = _slicedToArray(_useState43, 2),
-    nota9 = _useState44[0],
-    setNota9 = _useState44[1];
+    nota8 = _useState44[0],
+    setNota8 = _useState44[1];
   var _useState45 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState46 = _slicedToArray(_useState45, 2),
-    nota10 = _useState46[0],
-    setNota10 = _useState46[1];
+    nota9 = _useState46[0],
+    setNota9 = _useState46[1];
+  var _useState47 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState48 = _slicedToArray(_useState47, 2),
+    nota10 = _useState48[0],
+    setNota10 = _useState48[1];
 
   //Variáveis para os placeholders
   var consideracao = 'Leve em consideração  a qualidade do trabalho realizado pelo funcionário, sua eficiência, precisão e produtividade.';
@@ -541,20 +545,28 @@ function HelloReact() {
                       d: "M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5m1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0M1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5"
                     })
                   }), " ", item.administrador]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-                  type: "button",
-                  className: "btn btn-primary",
-                  onClick: function onClick() {
-                    return setFuncionario_selected('true');
-                  },
-                  children: "Avaliar"
                 })]
               }, index);
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Chart__WEBPACK_IMPORTED_MODULE_2__["default"], {
-              data: data
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+              type: "button",
+              className: "btn btn-primary mt-3",
+              onClick: function onClick() {
+                return setFuncionario_selected('true');
+              },
+              children: "Avaliar"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+              type: "button",
+              className: "btn btn-primary ml-3 mt-3",
+              onClick: function onClick() {
+                return setHistorico(true);
+              },
+              children: "Hist\xF3rico"
             })]
           }), funcionario_selected === 'true' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h3", {
+              className: "mt-3",
+              children: "Formul\xE1rio para o feedback"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
               className: "mb-5 mt-6",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
                 htmlFor: "exampleFormControlInput1",
@@ -721,6 +733,13 @@ function HelloReact() {
               onClick: avaliar,
               children: "Avaliar Profissional"
             })]
+          })]
+        }), historico && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          className: "m-3",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h3", {
+            children: "Hist\xF3rico de feedback"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Chart__WEBPACK_IMPORTED_MODULE_2__["default"], {
+            data: data
           })]
         })]
       })

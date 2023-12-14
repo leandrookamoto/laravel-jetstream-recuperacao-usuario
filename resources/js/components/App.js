@@ -15,6 +15,7 @@ export default function HelloReact() {
     const [newId, setNewId] = useState(0);
     const [selectedDate, setSelectedDate] = useState('');
     const [idFuncionario, setIdFuncionario] = useState(null);
+    const [historico, setHistorico] = useState(false);
 
     
     //Configuração do ChartJS
@@ -297,15 +298,18 @@ export default function HelloReact() {
                 <div  className="list-group-item list-group-item-action"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-briefcase" viewBox="0 0 16 16">
   <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5m1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0M1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5"/>
 </svg> {item.administrador}</div>
-                    <button type="button" className="btn btn-primary" onClick={()=>setFuncionario_selected('true')}>Avaliar</button>
+                    
+                    
                 </div>)
                 }
                 
-                <Chart data={data}/>
+                <button type="button" className="btn btn-primary mt-3" onClick={()=>setFuncionario_selected('true')}>Avaliar</button>
+                    <button type="button" className="btn btn-primary ml-3 mt-3" onClick={()=>setHistorico(true)}>Histórico</button>
                 </>}
 
                 {funcionario_selected==='true'&&
                 <>
+                <h3 className='mt-3'>Formulário para o feedback</h3>
                     <div className="mb-5 mt-6">
                         <label htmlFor="exampleFormControlInput1" className="form-label">Qual foi o desempenho do colaborador no trabalho?</label>
                         <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={consideracao} onChange={e=>setNota1(e.currentTarget.value)}/>
@@ -365,8 +369,9 @@ export default function HelloReact() {
                     </>
                 }
                 </div>
+                {historico&& <div className='m-3'><h3>Histórico de feedback</h3><Chart data={data}/></div>}
             </div>
-               
+            
             </>}
         </>
     );
