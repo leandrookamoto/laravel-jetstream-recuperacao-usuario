@@ -15,6 +15,7 @@ export default function HelloReact() {
     const [newId, setNewId] = useState(0);
     const [selectedDate, setSelectedDate] = useState('');
     const [idFuncionario, setIdFuncionario] = useState(null);
+
     
     //Configuração do ChartJS
     const data = {
@@ -60,7 +61,7 @@ export default function HelloReact() {
 
 
 
-
+//Primeira requisição para a recuperação dos dados dos usuários ao inicializar o programa
     useEffect(() => {
         axios.get('/user')
           .then(response => {
@@ -89,6 +90,37 @@ export default function HelloReact() {
             console.error('Erro na primeira requisição:', error);
           });
       }, []);
+
+
+// //Requisição para atualização do gráfico toda vez que é atualizado a mediaFinal
+//       useEffect(()=>{
+//         axios.get('/user')
+//   .then(response => {
+//     const usuarioLogado = response.data.name;
+//     setUsuario(usuarioLogado);
+
+//     // Segunda requisição feita após o sucesso da primeira
+//     axios.get('/cadastrados')
+//       .then(response => {
+//         const lista = response.data;
+//         const listaFiltrada = lista.filter(item => item.administrador === usuarioLogado);
+//         setListaCadastro(listaFiltrada);
+
+//         const id = response.data.length?lista[response.data.length-1].id:0;
+//         console.log(`Este é o id final: ${id}`)
+//         setNewId(id);
+//       })
+//       .catch(error => {
+//         // Tratar erros da segunda requisição, se necessário
+//         console.error('Erro na segunda requisição:', error);
+//       });
+
+//   })
+//   .catch(error => {
+//     // Tratar erros da primeira requisição, se necessário
+//     console.error('Erro na primeira requisição:', error);
+//   });
+//     },[mediaFinal]);
       
 
 
@@ -96,16 +128,32 @@ export default function HelloReact() {
         if(!nome||!email||!setor){
             alert('Favor colocar todos os dados!')
         }else{
-            const lista = [...listaCadastro, {nome: nome, email: email, setor: setor, administrador: usuario}];
+            const lista = [...listaCadastro, {nome: nome, email: email, setor: setor, administrador: usuario, id: newId}];
             setListaCadastro(lista);
             console.log(lista);
             setNewId(newId+1);
+            
 
     axios.post('/cadastrar-usuario', {nome: nome, email: email, setor: setor, administrador: usuario})
       .then(response => {
         console.log('Usuário cadastrado com sucesso:', response.data);
         // Lidar com a resposta do servidor após o cadastro ser realizado com sucesso
       })
+      axios.get('/cadastrados')
+              .then(response => {
+                const lista = response.data;
+                const listaFiltrada = lista.filter(item => item.administrador === usuario);
+                setListaCadastro(listaFiltrada);
+
+                const id = response.data.length?lista[response.data.length-1].id:0;
+                console.log(`Este é o id final: ${id}`)
+                setIdFuncionario(id);
+              })
+              .catch(error => {
+                // Tratar erros da segunda requisição, se necessário
+                console.error('Erro na segunda requisição:', error);
+              })
+
       .catch(error => {
         console.error('Erro ao cadastrar usuário:', error);
         // Lidar com erros que ocorreram durante o cadastro
@@ -120,32 +168,26 @@ export default function HelloReact() {
         function avaliar(){
             const media = (parseInt(nota1)+parseInt(nota2)+parseInt(nota3)+parseInt(nota4)+parseInt(nota5)+parseInt(nota6)+parseInt(nota7)+parseInt(nota8)+parseInt(nota9)+parseInt(nota10))/10;
 
-            const newFuncionario = dadosFuncionario.map((item)=>item.avaliacoes).includes(item=>item.avaliacoes);
-
+   
+            console.log(mediaFinal);
 
             let array=[]
-            if (!newFuncionario) {
-                array = [...mediaFinal, {media:media, data: selectedDate}];
+                array = [...mediaFinal?mediaFinal:array, {media:media, data: selectedDate}];
                 setMediaFinal(array);
                 console.table(array);
-            } else {
-                const newFuncionario = dadosFuncionario.map((item) => item.avaliacoes);
-                array = [...newFuncionario, {media:media, data: selectedDate}];
-                setMediaFinal(array);
-                console.table(array);
-            }
-            
 
-            
 
             axios.put(`/cadastro/${idFuncionario}/update-avaliacao`, { avaliacoes: array })
-      .then(response => {
-        console.log('Resposta do servidor:', response.data);
-        // Aqui você pode atualizar o estado ou fazer outras ações com base na resposta
-      })
-      .catch(error => {
-        console.error('Erro ao enviar requisição:', error);
-      });
+            .then(response => {
+              console.log('Resposta do servidor:', response.data);
+              // Aqui você pode atualizar o estado ou fazer outras ações com base na resposta
+            })
+            .catch(error => {
+              console.error('Erro ao enviar requisição:', error);
+            });
+
+
+
 
           
         };
@@ -157,10 +199,13 @@ export default function HelloReact() {
 
           function handleFuncionario(e) {
             const cadastroFuncionario = e.currentTarget.value;
+            console.log(cadastroFuncionario)
             const novoDado = listaCadastro.filter((item) => item.nome === cadastroFuncionario);
             setDadosFuncionario(novoDado);
             setFuncionario('true');
             setIdFuncionario(novoDado.map((item) => item.id).join());
+
+            console.log('Este é o idFuncionario '+novoDado.map((item) => item.id).join());
           
             const avaliacoes = novoDado.map((item) => item.avaliacoes);
           
@@ -183,27 +228,31 @@ export default function HelloReact() {
 
     return (
         <>
-           {usuario}
+           Olá {usuario}. Seja bem vindo ao programa de feedbacks! Favor escolher uma das opções abaixo!
 
            {/* Seleciona se vai cadastrar ou fazer o feedback */}
-           <select className="form-select" aria-label="Default select example" onChange={e=>setSelect(e.currentTarget.value)} >
+           <select className="form-select " aria-label="Default select example" onChange={e=>setSelect(e.currentTarget.value)} >
                 <option value="cadastrar" selected>Cadastrar funcionário</option>
-                <option value="funcionario">Escolha o funcionário</option>
+                <option value="funcionario">Sistema de feedback</option>
             </select>
 
+            {/* Aqui vai a parte do cadastro do funcionário */}
             {select==='cadastrar'&&<>
+            <div className="card mt-5">
+            <h5 class="card-header">Cadastro de funcionários</h5>
+            <div className="card-body">
             <div className="mb-1 mt-6">
-                <label for="exampleFormControlInput1" className="form-label">Nome</label>
+                <label htmlFor="exampleFormControlInput1" className="form-label">Nome</label>
                 <input className="form-control" id="exampleFormControlInput1" placeholder="Colocar o nome do funcionário" value={nome} onChange={e=>setNome(e.currentTarget.value)}/>
             </div>
 
             <div className="mb-3">
-                <label for="exampleFormControlInput1" className="form-label">E-mail</label>
+                <label htmlFor="exampleFormControlInput1" className="form-label">E-mail</label>
                 <input className="form-control" type='email' onChange={e=>setEmail(e.currentTarget.value)} value={email} id="exampleFormControlInput1" placeholder="Colocar o e-mail de contato"/>
             </div>
 
             <div className="mb-3">
-                <label for="exampleFormControlInput1" className="form-label">Setor</label>
+                <label htmlFor="exampleFormControlInput1" className="form-label">Setor</label>
                 <select className="form-select" aria-label="Default select example" onChange={e=>setSetor(e.currentTarget.value)} value={setor}>
                     <option selected>Escolha a opção</option>
                     <option value="Setor A">Setor A</option>
@@ -212,19 +261,19 @@ export default function HelloReact() {
             </div>
 
             <button type="button" className="btn btn-primary" onClick={gravar}>Gravar</button>
+            </div>
+            </div>
+
+            
        
-            {listaCadastro.length > 0 && listaCadastro.map((item, index) => (
-                <div key={index}>
-                    <p>Nome: {item.nome}</p>
-                    <p>Email: {item.email}</p>
-                    <p>Setor: {item.setor}</p>
-                    <p>Administrador: {item.administrador}</p>
-                </div>
-            ))}
             </>}
 
             {select==='funcionario'&&
             <>
+
+            <div class="card mt-5">
+                <h5 class="card-header">Sistema de feedback</h5>
+                <div class="card-body">
                 <select className="form-select mt-5 mb-3" aria-label="Default select example" onChange={handleFuncionario}>
                     <option selected>Escolha qual funcionário</option>
                     {listaCadastro.map((item,index)=><option key={index} value={item.nome}>
@@ -258,52 +307,52 @@ export default function HelloReact() {
                 {funcionario_selected==='true'&&
                 <>
                     <div className="mb-5 mt-6">
-                        <label for="exampleFormControlInput1" className="form-label">Qual foi o desempenho do colaborador no trabalho?</label>
+                        <label htmlFor="exampleFormControlInput1" className="form-label">Qual foi o desempenho do colaborador no trabalho?</label>
                         <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={consideracao} onChange={e=>setNota1(e.currentTarget.value)}/>
                     </div>
 
                     <div className="mb-5">
-                        <label for="exampleFormControlInput1" className="form-label">Como estão as habilidades técnicas e conhecimento?</label>
+                        <label htmlFor="exampleFormControlInput1" className="form-label">Como estão as habilidades técnicas e conhecimento?</label>
                         <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={tecnico} onChange={e=>setNota2(e.currentTarget.value)}/>
                     </div>
 
                     <div className="mb-5">
-                        <label for="exampleFormControlInput1" className="form-label">Como está o comportamento profissional?</label>
+                        <label htmlFor="exampleFormControlInput1" className="form-label">Como está o comportamento profissional?</label>
                         <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={profissional} onChange={e=>setNota3(e.currentTarget.value)}/>
                     </div>
 
                     <div className="mb-5">
-                        <label for="exampleFormControlInput1" className="form-label">Como estão as habilidades interpessoais?</label>
+                        <label htmlFor="exampleFormControlInput1" className="form-label">Como estão as habilidades interpessoais?</label>
                         <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={interpessoal} onChange={e=>setNota4(e.currentTarget.value)}/>
                     </div>
 
                     <div className="mb-5">
-                        <label for="exampleFormControlInput1" className="form-label">O colaborador tem iniciativa e responsabilidade?</label>
+                        <label htmlFor="exampleFormControlInput1" className="form-label">O colaborador tem iniciativa e responsabilidade?</label>
                         <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={iniciativa} onChange={e=>setNota5(e.currentTarget.value)}/>
                     </div>
 
                     <div className="mb-5">
-                        <label for="exampleFormControlInput1" className="form-label">É adaptável e flexível?</label>
+                        <label htmlFor="exampleFormControlInput1" className="form-label">É adaptável e flexível?</label>
                         <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={adaptavel} onChange={e=>setNota6(e.currentTarget.value)}/>
                     </div>
 
                     <div className="mb-5">
-                        <label for="exampleFormControlInput1" className="form-label">É pontual?</label>
+                        <label htmlFor="exampleFormControlInput1" className="form-label">É pontual?</label>
                         <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={pontualidade} onChange={e=>setNota7(e.currentTarget.value)}/>
                     </div>
 
                     <div className="mb-5">
-                        <label for="exampleFormControlInput1" className="form-label">É alinhado com os objetivos e metas da empresa?</label>
+                        <label htmlFor="exampleFormControlInput1" className="form-label">É alinhado com os objetivos e metas da empresa?</label>
                         <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={objetivo} onChange={e=>setNota8(e.currentTarget.value)}/>
                     </div>
 
                     <div className="mb-5">
-                        <label for="exampleFormControlInput1" className="form-label">É aberto para os feedbacks?</label>
+                        <label htmlFor="exampleFormControlInput1" className="form-label">É aberto para os feedbacks?</label>
                         <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={feedback} onChange={e=>setNota9(e.currentTarget.value)}/>
                     </div>
 
                     <div className="mb-5">
-                        <label for="exampleFormControlInput1" className="form-label">Busca o desenvolvimento profissional?</label>
+                        <label htmlFor="exampleFormControlInput1" className="form-label">Busca o desenvolvimento profissional?</label>
                         <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={desenvolvimento} onChange={e=>setNota10(e.currentTarget.value)}/>
                     </div>
 
@@ -315,6 +364,9 @@ export default function HelloReact() {
                     <button type="button" className="btn btn-primary" onClick={avaliar}>Avaliar Profissional</button>
                     </>
                 }
+                </div>
+            </div>
+               
             </>}
         </>
     );

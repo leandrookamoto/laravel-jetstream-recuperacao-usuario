@@ -214,6 +214,8 @@ function HelloReact() {
   var objetivo = 'Verifique se o funcionário está alinhado com os objetivos da empresa e como suas ações contribuem para esses objetivos.';
   var feedback = 'Analise como o funcionário lida com feedbacks anteriores e se ele implementou melhorias com base nessas sugestões.';
   var desenvolvimento = 'Considere se o funcionário está buscando oportunidades de desenvolvimento, como participação em treinamentos, workshops ou outras atividades para aprimorar suas habilidades.';
+
+  //Primeira requisição para a recuperação dos dados dos usuários ao inicializar o programa
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     axios.get('/user').then(function (response) {
       var usuarioLogado = response.data.name;
@@ -238,6 +240,37 @@ function HelloReact() {
       console.error('Erro na primeira requisição:', error);
     });
   }, []);
+
+  // //Requisição para atualização do gráfico toda vez que é atualizado a mediaFinal
+  //       useEffect(()=>{
+  //         axios.get('/user')
+  //   .then(response => {
+  //     const usuarioLogado = response.data.name;
+  //     setUsuario(usuarioLogado);
+
+  //     // Segunda requisição feita após o sucesso da primeira
+  //     axios.get('/cadastrados')
+  //       .then(response => {
+  //         const lista = response.data;
+  //         const listaFiltrada = lista.filter(item => item.administrador === usuarioLogado);
+  //         setListaCadastro(listaFiltrada);
+
+  //         const id = response.data.length?lista[response.data.length-1].id:0;
+  //         console.log(`Este é o id final: ${id}`)
+  //         setNewId(id);
+  //       })
+  //       .catch(error => {
+  //         // Tratar erros da segunda requisição, se necessário
+  //         console.error('Erro na segunda requisição:', error);
+  //       });
+
+  //   })
+  //   .catch(error => {
+  //     // Tratar erros da primeira requisição, se necessário
+  //     console.error('Erro na primeira requisição:', error);
+  //   });
+  //     },[mediaFinal]);
+
   function gravar() {
     if (!nome || !email || !setor) {
       alert('Favor colocar todos os dados!');
@@ -246,7 +279,8 @@ function HelloReact() {
         nome: nome,
         email: email,
         setor: setor,
-        administrador: usuario
+        administrador: usuario,
+        id: newId
       }]);
       setListaCadastro(lista);
       console.log(lista);
@@ -259,6 +293,19 @@ function HelloReact() {
       }).then(function (response) {
         console.log('Usuário cadastrado com sucesso:', response.data);
         // Lidar com a resposta do servidor após o cadastro ser realizado com sucesso
+      });
+      axios.get('/cadastrados').then(function (response) {
+        var lista = response.data;
+        var listaFiltrada = lista.filter(function (item) {
+          return item.administrador === usuario;
+        });
+        setListaCadastro(listaFiltrada);
+        var id = response.data.length ? lista[response.data.length - 1].id : 0;
+        console.log("Este \xE9 o id final: ".concat(id));
+        setIdFuncionario(id);
+      })["catch"](function (error) {
+        // Tratar erros da segunda requisição, se necessário
+        console.error('Erro na segunda requisição:', error);
       })["catch"](function (error) {
         console.error('Erro ao cadastrar usuário:', error);
         // Lidar com erros que ocorreram durante o cadastro
@@ -271,30 +318,14 @@ function HelloReact() {
   ;
   function avaliar() {
     var media = (parseInt(nota1) + parseInt(nota2) + parseInt(nota3) + parseInt(nota4) + parseInt(nota5) + parseInt(nota6) + parseInt(nota7) + parseInt(nota8) + parseInt(nota9) + parseInt(nota10)) / 10;
-    var newFuncionario = dadosFuncionario.map(function (item) {
-      return item.avaliacoes;
-    }).includes(function (item) {
-      return item.avaliacoes;
-    });
+    console.log(mediaFinal);
     var array = [];
-    if (!newFuncionario) {
-      array = [].concat(_toConsumableArray(mediaFinal), [{
-        media: media,
-        data: selectedDate
-      }]);
-      setMediaFinal(array);
-      console.table(array);
-    } else {
-      var _newFuncionario = dadosFuncionario.map(function (item) {
-        return item.avaliacoes;
-      });
-      array = [].concat(_toConsumableArray(_newFuncionario), [{
-        media: media,
-        data: selectedDate
-      }]);
-      setMediaFinal(array);
-      console.table(array);
-    }
+    array = [].concat(_toConsumableArray(mediaFinal ? mediaFinal : array), [{
+      media: media,
+      data: selectedDate
+    }]);
+    setMediaFinal(array);
+    console.table(array);
     axios.put("/cadastro/".concat(idFuncionario, "/update-avaliacao"), {
       avaliacoes: array
     }).then(function (response) {
@@ -315,12 +346,16 @@ function HelloReact() {
   };
   function handleFuncionario(e) {
     var cadastroFuncionario = e.currentTarget.value;
+    console.log(cadastroFuncionario);
     var novoDado = listaCadastro.filter(function (item) {
       return item.nome === cadastroFuncionario;
     });
     setDadosFuncionario(novoDado);
     setFuncionario('true');
     setIdFuncionario(novoDado.map(function (item) {
+      return item.id;
+    }).join());
+    console.log('Este é o idFuncionario ' + novoDado.map(function (item) {
       return item.id;
     }).join());
     var avaliacoes = novoDado.map(function (item) {
@@ -338,8 +373,8 @@ function HelloReact() {
     }
   }
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
-    children: [usuario, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
-      className: "form-select",
+    children: ["Ol\xE1 ", usuario, ". Seja bem vindo ao programa de feedbacks! Favor escolher uma das op\xE7\xF5es abaixo!", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+      className: "form-select ",
       "aria-label": "Default select example",
       onChange: function onChange(e) {
         return setSelect(e.currentTarget.value);
@@ -350,339 +385,345 @@ function HelloReact() {
         children: "Cadastrar funcion\xE1rio"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
         value: "funcionario",
-        children: "Escolha o funcion\xE1rio"
+        children: "Sistema de feedback"
       })]
-    }), select === 'cadastrar' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-        className: "mb-1 mt-6",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-          "for": "exampleFormControlInput1",
-          className: "form-label",
-          children: "Nome"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-          className: "form-control",
-          id: "exampleFormControlInput1",
-          placeholder: "Colocar o nome do funcion\xE1rio",
-          value: nome,
-          onChange: function onChange(e) {
-            return setNome(e.currentTarget.value);
-          }
-        })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-        className: "mb-3",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-          "for": "exampleFormControlInput1",
-          className: "form-label",
-          children: "E-mail"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-          className: "form-control",
-          type: "email",
-          onChange: function onChange(e) {
-            return setEmail(e.currentTarget.value);
-          },
-          value: email,
-          id: "exampleFormControlInput1",
-          placeholder: "Colocar o e-mail de contato"
-        })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-        className: "mb-3",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-          "for": "exampleFormControlInput1",
-          className: "form-label",
-          children: "Setor"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
-          className: "form-select",
-          "aria-label": "Default select example",
-          onChange: function onChange(e) {
-            return setSetor(e.currentTarget.value);
-          },
-          value: setor,
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
-            selected: true,
-            children: "Escolha a op\xE7\xE3o"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
-            value: "Setor A",
-            children: "Setor A"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
-            value: "Setor B",
-            children: "Setor B"
+    }), select === 'cadastrar' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        className: "card mt-5",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h5", {
+          "class": "card-header",
+          children: "Cadastro de funcion\xE1rios"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          className: "card-body",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+            className: "mb-1 mt-6",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+              htmlFor: "exampleFormControlInput1",
+              className: "form-label",
+              children: "Nome"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+              className: "form-control",
+              id: "exampleFormControlInput1",
+              placeholder: "Colocar o nome do funcion\xE1rio",
+              value: nome,
+              onChange: function onChange(e) {
+                return setNome(e.currentTarget.value);
+              }
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+            className: "mb-3",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+              htmlFor: "exampleFormControlInput1",
+              className: "form-label",
+              children: "E-mail"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+              className: "form-control",
+              type: "email",
+              onChange: function onChange(e) {
+                return setEmail(e.currentTarget.value);
+              },
+              value: email,
+              id: "exampleFormControlInput1",
+              placeholder: "Colocar o e-mail de contato"
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+            className: "mb-3",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+              htmlFor: "exampleFormControlInput1",
+              className: "form-label",
+              children: "Setor"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+              className: "form-select",
+              "aria-label": "Default select example",
+              onChange: function onChange(e) {
+                return setSetor(e.currentTarget.value);
+              },
+              value: setor,
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                selected: true,
+                children: "Escolha a op\xE7\xE3o"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                value: "Setor A",
+                children: "Setor A"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                value: "Setor B",
+                children: "Setor B"
+              })]
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+            type: "button",
+            className: "btn btn-primary",
+            onClick: gravar,
+            children: "Gravar"
           })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-        type: "button",
-        className: "btn btn-primary",
-        onClick: gravar,
-        children: "Gravar"
-      }), listaCadastro.length > 0 && listaCadastro.map(function (item, index) {
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
-            children: ["Nome: ", item.nome]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
-            children: ["Email: ", item.email]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
-            children: ["Setor: ", item.setor]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
-            children: ["Administrador: ", item.administrador]
-          })]
-        }, index);
-      })]
-    }), select === 'funcionario' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
-        className: "form-select mt-5 mb-3",
-        "aria-label": "Default select example",
-        onChange: handleFuncionario,
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
-          selected: true,
-          children: "Escolha qual funcion\xE1rio"
-        }), listaCadastro.map(function (item, index) {
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
-            value: item.nome,
-            children: item.nome
-          }, index);
-        })]
-      }), funcionario === 'true' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
-        children: [dadosFuncionario.map(function (item, index) {
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-            className: "list-group",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-              className: "list-group-item list-group-item-action active",
-              "aria-current": "true",
-              children: "Dados do funcion\xE1rio"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              className: "list-group-item list-group-item-action",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("svg", {
-                xmlns: "http://www.w3.org/2000/svg",
-                width: "16",
-                height: "16",
-                fill: "currentColor",
-                className: "bi bi-person",
-                viewBox: "0 0 16 16",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z"
-                })
-              }), " ", item.nome]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              className: "list-group-item list-group-item-action",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("svg", {
-                xmlns: "http://www.w3.org/2000/svg",
-                width: "16",
-                height: "16",
-                fill: "currentColor",
-                className: "bi bi-envelope",
-                viewBox: "0 0 16 16",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"
-                })
-              }), " ", item.email]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              className: "list-group-item list-group-item-action",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
-                xmlns: "http://www.w3.org/2000/svg",
-                width: "16",
-                height: "16",
-                fill: "currentColor",
-                className: "bi bi-building",
-                viewBox: "0 0 16 16",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M4 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3z"
+      })
+    }), select === 'funcionario' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        "class": "card mt-5",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h5", {
+          "class": "card-header",
+          children: "Sistema de feedback"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          "class": "card-body",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+            className: "form-select mt-5 mb-3",
+            "aria-label": "Default select example",
+            onChange: handleFuncionario,
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+              selected: true,
+              children: "Escolha qual funcion\xE1rio"
+            }), listaCadastro.map(function (item, index) {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                value: item.nome,
+                children: item.nome
+              }, index);
+            })]
+          }), funcionario === 'true' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+            children: [dadosFuncionario.map(function (item, index) {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                className: "list-group",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                  className: "list-group-item list-group-item-action active",
+                  "aria-current": "true",
+                  children: "Dados do funcion\xE1rio"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  className: "list-group-item list-group-item-action",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("svg", {
+                    xmlns: "http://www.w3.org/2000/svg",
+                    width: "16",
+                    height: "16",
+                    fill: "currentColor",
+                    className: "bi bi-person",
+                    viewBox: "0 0 16 16",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      d: "M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z"
+                    })
+                  }), " ", item.nome]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  className: "list-group-item list-group-item-action",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("svg", {
+                    xmlns: "http://www.w3.org/2000/svg",
+                    width: "16",
+                    height: "16",
+                    fill: "currentColor",
+                    className: "bi bi-envelope",
+                    viewBox: "0 0 16 16",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      d: "M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"
+                    })
+                  }), " ", item.email]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  className: "list-group-item list-group-item-action",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+                    xmlns: "http://www.w3.org/2000/svg",
+                    width: "16",
+                    height: "16",
+                    fill: "currentColor",
+                    className: "bi bi-building",
+                    viewBox: "0 0 16 16",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      d: "M4 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      d: "M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3z"
+                    })]
+                  }), " ", item.setor]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  className: "list-group-item list-group-item-action",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("svg", {
+                    xmlns: "http://www.w3.org/2000/svg",
+                    width: "16",
+                    height: "16",
+                    fill: "currentColor",
+                    className: "bi bi-briefcase",
+                    viewBox: "0 0 16 16",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      d: "M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5m1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0M1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5"
+                    })
+                  }), " ", item.administrador]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                  type: "button",
+                  className: "btn btn-primary",
+                  onClick: function onClick() {
+                    return setFuncionario_selected('true');
+                  },
+                  children: "Avaliar"
                 })]
-              }), " ", item.setor]
+              }, index);
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Chart__WEBPACK_IMPORTED_MODULE_2__["default"], {
+              data: data
+            })]
+          }), funcionario_selected === 'true' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              className: "mb-5 mt-6",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                htmlFor: "exampleFormControlInput1",
+                className: "form-label",
+                children: "Qual foi o desempenho do colaborador no trabalho?"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                type: "number",
+                className: "form-control",
+                id: "exampleFormControlInput1",
+                placeholder: consideracao,
+                onChange: function onChange(e) {
+                  return setNota1(e.currentTarget.value);
+                }
+              })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              className: "list-group-item list-group-item-action",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("svg", {
-                xmlns: "http://www.w3.org/2000/svg",
-                width: "16",
-                height: "16",
-                fill: "currentColor",
-                className: "bi bi-briefcase",
-                viewBox: "0 0 16 16",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5m1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0M1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5"
-                })
-              }), " ", item.administrador]
+              className: "mb-5",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                htmlFor: "exampleFormControlInput1",
+                className: "form-label",
+                children: "Como est\xE3o as habilidades t\xE9cnicas e conhecimento?"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                type: "number",
+                className: "form-control",
+                id: "exampleFormControlInput1",
+                placeholder: tecnico,
+                onChange: function onChange(e) {
+                  return setNota2(e.currentTarget.value);
+                }
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              className: "mb-5",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                htmlFor: "exampleFormControlInput1",
+                className: "form-label",
+                children: "Como est\xE1 o comportamento profissional?"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                type: "number",
+                className: "form-control",
+                id: "exampleFormControlInput1",
+                placeholder: profissional,
+                onChange: function onChange(e) {
+                  return setNota3(e.currentTarget.value);
+                }
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              className: "mb-5",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                htmlFor: "exampleFormControlInput1",
+                className: "form-label",
+                children: "Como est\xE3o as habilidades interpessoais?"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                type: "number",
+                className: "form-control",
+                id: "exampleFormControlInput1",
+                placeholder: interpessoal,
+                onChange: function onChange(e) {
+                  return setNota4(e.currentTarget.value);
+                }
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              className: "mb-5",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                htmlFor: "exampleFormControlInput1",
+                className: "form-label",
+                children: "O colaborador tem iniciativa e responsabilidade?"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                type: "number",
+                className: "form-control",
+                id: "exampleFormControlInput1",
+                placeholder: iniciativa,
+                onChange: function onChange(e) {
+                  return setNota5(e.currentTarget.value);
+                }
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              className: "mb-5",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                htmlFor: "exampleFormControlInput1",
+                className: "form-label",
+                children: "\xC9 adapt\xE1vel e flex\xEDvel?"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                type: "number",
+                className: "form-control",
+                id: "exampleFormControlInput1",
+                placeholder: adaptavel,
+                onChange: function onChange(e) {
+                  return setNota6(e.currentTarget.value);
+                }
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              className: "mb-5",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                htmlFor: "exampleFormControlInput1",
+                className: "form-label",
+                children: "\xC9 pontual?"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                type: "number",
+                className: "form-control",
+                id: "exampleFormControlInput1",
+                placeholder: pontualidade,
+                onChange: function onChange(e) {
+                  return setNota7(e.currentTarget.value);
+                }
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              className: "mb-5",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                htmlFor: "exampleFormControlInput1",
+                className: "form-label",
+                children: "\xC9 alinhado com os objetivos e metas da empresa?"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                type: "number",
+                className: "form-control",
+                id: "exampleFormControlInput1",
+                placeholder: objetivo,
+                onChange: function onChange(e) {
+                  return setNota8(e.currentTarget.value);
+                }
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              className: "mb-5",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                htmlFor: "exampleFormControlInput1",
+                className: "form-label",
+                children: "\xC9 aberto para os feedbacks?"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                type: "number",
+                className: "form-control",
+                id: "exampleFormControlInput1",
+                placeholder: feedback,
+                onChange: function onChange(e) {
+                  return setNota9(e.currentTarget.value);
+                }
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              className: "mb-5",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                htmlFor: "exampleFormControlInput1",
+                className: "form-label",
+                children: "Busca o desenvolvimento profissional?"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                type: "number",
+                className: "form-control",
+                id: "exampleFormControlInput1",
+                placeholder: desenvolvimento,
+                onChange: function onChange(e) {
+                  return setNota10(e.currentTarget.value);
+                }
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+              type: "date",
+              id: "data-pagamento",
+              name: "data_pagamento",
+              value: selectedDate,
+              onChange: function onChange(e) {
+                return setSelectedDate(e.currentTarget.value);
+              },
+              className: "form-control"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
+              children: ["Selected Date: ", selectedDate ? formatBrazilianDate(selectedDate) : '']
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
               type: "button",
               className: "btn btn-primary",
-              onClick: function onClick() {
-                return setFuncionario_selected('true');
-              },
-              children: "Avaliar"
+              onClick: avaliar,
+              children: "Avaliar Profissional"
             })]
-          }, index);
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Chart__WEBPACK_IMPORTED_MODULE_2__["default"], {
-          data: data
+          })]
         })]
-      }), funcionario_selected === 'true' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "mb-5 mt-6",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-            "for": "exampleFormControlInput1",
-            className: "form-label",
-            children: "Qual foi o desempenho do colaborador no trabalho?"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            type: "number",
-            className: "form-control",
-            id: "exampleFormControlInput1",
-            placeholder: consideracao,
-            onChange: function onChange(e) {
-              return setNota1(e.currentTarget.value);
-            }
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "mb-5",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-            "for": "exampleFormControlInput1",
-            className: "form-label",
-            children: "Como est\xE3o as habilidades t\xE9cnicas e conhecimento?"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            type: "number",
-            className: "form-control",
-            id: "exampleFormControlInput1",
-            placeholder: tecnico,
-            onChange: function onChange(e) {
-              return setNota2(e.currentTarget.value);
-            }
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "mb-5",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-            "for": "exampleFormControlInput1",
-            className: "form-label",
-            children: "Como est\xE1 o comportamento profissional?"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            type: "number",
-            className: "form-control",
-            id: "exampleFormControlInput1",
-            placeholder: profissional,
-            onChange: function onChange(e) {
-              return setNota3(e.currentTarget.value);
-            }
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "mb-5",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-            "for": "exampleFormControlInput1",
-            className: "form-label",
-            children: "Como est\xE3o as habilidades interpessoais?"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            type: "number",
-            className: "form-control",
-            id: "exampleFormControlInput1",
-            placeholder: interpessoal,
-            onChange: function onChange(e) {
-              return setNota4(e.currentTarget.value);
-            }
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "mb-5",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-            "for": "exampleFormControlInput1",
-            className: "form-label",
-            children: "O colaborador tem iniciativa e responsabilidade?"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            type: "number",
-            className: "form-control",
-            id: "exampleFormControlInput1",
-            placeholder: iniciativa,
-            onChange: function onChange(e) {
-              return setNota5(e.currentTarget.value);
-            }
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "mb-5",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-            "for": "exampleFormControlInput1",
-            className: "form-label",
-            children: "\xC9 adapt\xE1vel e flex\xEDvel?"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            type: "number",
-            className: "form-control",
-            id: "exampleFormControlInput1",
-            placeholder: adaptavel,
-            onChange: function onChange(e) {
-              return setNota6(e.currentTarget.value);
-            }
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "mb-5",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-            "for": "exampleFormControlInput1",
-            className: "form-label",
-            children: "\xC9 pontual?"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            type: "number",
-            className: "form-control",
-            id: "exampleFormControlInput1",
-            placeholder: pontualidade,
-            onChange: function onChange(e) {
-              return setNota7(e.currentTarget.value);
-            }
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "mb-5",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-            "for": "exampleFormControlInput1",
-            className: "form-label",
-            children: "\xC9 alinhado com os objetivos e metas da empresa?"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            type: "number",
-            className: "form-control",
-            id: "exampleFormControlInput1",
-            placeholder: objetivo,
-            onChange: function onChange(e) {
-              return setNota8(e.currentTarget.value);
-            }
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "mb-5",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-            "for": "exampleFormControlInput1",
-            className: "form-label",
-            children: "\xC9 aberto para os feedbacks?"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            type: "number",
-            className: "form-control",
-            id: "exampleFormControlInput1",
-            placeholder: feedback,
-            onChange: function onChange(e) {
-              return setNota9(e.currentTarget.value);
-            }
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "mb-5",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-            "for": "exampleFormControlInput1",
-            className: "form-label",
-            children: "Busca o desenvolvimento profissional?"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            type: "number",
-            className: "form-control",
-            id: "exampleFormControlInput1",
-            placeholder: desenvolvimento,
-            onChange: function onChange(e) {
-              return setNota10(e.currentTarget.value);
-            }
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-          type: "date",
-          id: "data-pagamento",
-          name: "data_pagamento",
-          value: selectedDate,
-          onChange: function onChange(e) {
-            return setSelectedDate(e.currentTarget.value);
-          },
-          className: "form-control"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("p", {
-          children: ["Selected Date: ", selectedDate ? formatBrazilianDate(selectedDate) : '']
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-          type: "button",
-          className: "btn btn-primary",
-          onClick: avaliar,
-          children: "Avaliar Profissional"
-        })]
-      })]
+      })
     })]
   });
 }
