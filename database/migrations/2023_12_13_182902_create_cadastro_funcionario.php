@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('setor');
             $table->string('administrador');
+            $table->json('avaliacoes')->nullable();
             $table->timestamps();
         });
     }

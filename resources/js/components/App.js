@@ -1,15 +1,32 @@
 import ReactDOM from 'react-dom';
 import {useState, useEffect} from 'react';
+import Chart from './Chart';
 
 
 export default function HelloReact() {
     const [usuario, setUsuario] = useState();
-    const [cadastrar, setCadastrar] = useState(true);
+    const [select, setSelect] = useState('cadastrar');
     const [setor, setSetor] = useState('');
     const [listaCadastro, setListaCadastro] = useState([]);
-
-
+    const [mediaFinal, setMediaFinal] = useState([]);
+    const [funcionario_selected, setFuncionario_selected] = useState('false');
+    const [funcionario, setFuncionario] = useState('');
+    const [dadosFuncionario, setDadosFuncionario] = useState([]);
+    const [newId, setNewId] = useState(0);
     const [selectedDate, setSelectedDate] = useState('');
+    const [idFuncionario, setIdFuncionario] = useState(null);
+    
+    //Configuração do ChartJS
+    const data = {
+        labels: mediaFinal.map(item => item.data),
+        datasets: [{
+          label: 'Feedback',
+          data: mediaFinal.map(item => item.media),
+          fill: false,
+          borderColor: 'rgb(75, 192, 192)',
+          tension: 0.1
+        }]
+      };
 
     //Variáveis para as notas
     const [nome, setNome] = useState('');
@@ -55,8 +72,11 @@ export default function HelloReact() {
               .then(response => {
                 const lista = response.data;
                 const listaFiltrada = lista.filter(item => item.administrador === usuarioLogado);
-                console.log(`Esta é a lista filtrada ${listaFiltrada}`);
                 setListaCadastro(listaFiltrada);
+
+                const id = response.data.length?lista[response.data.length-1].id:0;
+                console.log(`Este é o id final: ${id}`)
+                setNewId(id);
               })
               .catch(error => {
                 // Tratar erros da segunda requisição, se necessário
@@ -79,6 +99,7 @@ export default function HelloReact() {
             const lista = [...listaCadastro, {nome: nome, email: email, setor: setor, administrador: usuario}];
             setListaCadastro(lista);
             console.log(lista);
+            setNewId(newId+1);
 
     axios.post('/cadastrar-usuario', {nome: nome, email: email, setor: setor, administrador: usuario})
       .then(response => {
@@ -95,15 +116,36 @@ export default function HelloReact() {
             setSetor('');
         };
 
-        console.log(nota1);
+        
         function avaliar(){
-            // const novoObjeto = { ...listaCadastro[0], outraChave: { atributo1: 'valor1', atributo2: 'valor2' } };
-            // const novaLista = [...listaCadastro.slice(0, 1), novoObjeto, ...listaCadastro.slice(1)];
-            // setListaCadastro(novaLista);
-            // console.log(novaLista);
-
             const media = (parseInt(nota1)+parseInt(nota2)+parseInt(nota3)+parseInt(nota4)+parseInt(nota5)+parseInt(nota6)+parseInt(nota7)+parseInt(nota8)+parseInt(nota9)+parseInt(nota10))/10;
-            console.log(media);
+
+            const newFuncionario = dadosFuncionario.map((item)=>item.avaliacoes).includes(item=>item.avaliacoes);
+
+
+            let array=[]
+            if (!newFuncionario) {
+                array = [...mediaFinal, {media:media, data: selectedDate}];
+                setMediaFinal(array);
+                console.table(array);
+            } else {
+                const newFuncionario = dadosFuncionario.map((item) => item.avaliacoes);
+                array = [...newFuncionario, {media:media, data: selectedDate}];
+                setMediaFinal(array);
+                console.table(array);
+            }
+            
+
+            
+
+            axios.put(`/cadastro/${idFuncionario}/update-avaliacao`, { avaliacoes: array })
+      .then(response => {
+        console.log('Resposta do servidor:', response.data);
+        // Aqui você pode atualizar o estado ou fazer outras ações com base na resposta
+      })
+      .catch(error => {
+        console.error('Erro ao enviar requisição:', error);
+      });
 
           
         };
@@ -111,6 +153,21 @@ export default function HelloReact() {
         const formatBrazilianDate = (date) => {
             const [year, month, day] = date.split('-');
             return `${day}/${month}/${year}`;
+          };
+
+          function handleFuncionario(e){
+            const cadastroFuncionario = e.currentTarget.value
+            const novoDado = listaCadastro.filter((item)=>item.nome===cadastroFuncionario);
+            setDadosFuncionario(novoDado);
+            setFuncionario('true');
+            setIdFuncionario(novoDado.map(item=>item.id).join());
+            let avalia = novoDado.map(item=>item.avaliacoes);
+            avalia = JSON.parse(avalia)
+
+            setMediaFinal(avalia);
+
+            console.log('Handle está funcionando!');
+            console.table(avalia);
           };
 
 
@@ -121,33 +178,32 @@ export default function HelloReact() {
            {usuario}
 
            {/* Seleciona se vai cadastrar ou fazer o feedback */}
-           <select class="form-select" aria-label="Default select example" onChange={e=>setCadastrar(e.currentTarget.value)} >
-                <option selected>Escolha a opção</option>
-                <option value="true">Cadastrar funcionário</option>
-                <option value="false">Fornecer feedback</option>
+           <select className="form-select" aria-label="Default select example" onChange={e=>setSelect(e.currentTarget.value)} >
+                <option value="cadastrar" selected>Cadastrar funcionário</option>
+                <option value="funcionario">Escolha o funcionário</option>
             </select>
 
-            {cadastrar==='true'&&<>
-            <div class="mb-1 mt-6">
-                <label for="exampleFormControlInput1" class="form-label">Nome</label>
-                <input class="form-control" id="exampleFormControlInput1" placeholder="Colocar o nome do funcionário" value={nome} onChange={e=>setNome(e.currentTarget.value)}/>
+            {select==='cadastrar'&&<>
+            <div className="mb-1 mt-6">
+                <label for="exampleFormControlInput1" className="form-label">Nome</label>
+                <input className="form-control" id="exampleFormControlInput1" placeholder="Colocar o nome do funcionário" value={nome} onChange={e=>setNome(e.currentTarget.value)}/>
             </div>
 
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">E-mail</label>
-                <input class="form-control" type='email' onChange={e=>setEmail(e.currentTarget.value)} value={email} id="exampleFormControlInput1" placeholder="Colocar o e-mail de contato"/>
+            <div className="mb-3">
+                <label for="exampleFormControlInput1" className="form-label">E-mail</label>
+                <input className="form-control" type='email' onChange={e=>setEmail(e.currentTarget.value)} value={email} id="exampleFormControlInput1" placeholder="Colocar o e-mail de contato"/>
             </div>
 
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Setor</label>
-                <select class="form-select" aria-label="Default select example" onChange={e=>setSetor(e.currentTarget.value)} value={setor}>
+            <div className="mb-3">
+                <label for="exampleFormControlInput1" className="form-label">Setor</label>
+                <select className="form-select" aria-label="Default select example" onChange={e=>setSetor(e.currentTarget.value)} value={setor}>
                     <option selected>Escolha a opção</option>
                     <option value="Setor A">Setor A</option>
                     <option value="Setor B">Setor B</option>
                 </select>
             </div>
 
-            <button type="button" class="btn btn-primary" onClick={gravar}>Gravar</button>
+            <button type="button" className="btn btn-primary" onClick={gravar}>Gravar</button>
        
             {listaCadastro.length > 0 && listaCadastro.map((item, index) => (
                 <div key={index}>
@@ -159,64 +215,98 @@ export default function HelloReact() {
             ))}
             </>}
 
-            {cadastrar==='false'&&
+            {select==='funcionario'&&
             <>
-                <div class="mb-5 mt-6">
-                    <label for="exampleFormControlInput1" class="form-label">Qual foi o desempenho do colaborador no trabalho?</label>
-                    <input type="number" class="form-control" id="exampleFormControlInput1" placeholder={consideracao} onChange={e=>setNota1(e.currentTarget.value)}/>
+                <select className="form-select mt-5 mb-3" aria-label="Default select example" onChange={handleFuncionario}>
+                    <option selected>Escolha qual funcionário</option>
+                    {listaCadastro.map((item,index)=><option key={index} value={item.nome}>
+                        {item.nome}
+                    </option>)}
+                </select>
+                {funcionario==='true'&&<>{dadosFuncionario.map((item, index)=><div className="list-group" key={index}>
+                <div  className="list-group-item list-group-item-action active" aria-current="true">
+                    Dados do funcionário
                 </div>
+                <div  className="list-group-item list-group-item-action"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person" viewBox="0 0 16 16">
+  <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z"/>
+</svg> {item.nome}</div>
+                <div  className="list-group-item list-group-item-action"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-envelope" viewBox="0 0 16 16">
+  <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/>
+</svg> {item.email}</div>
+                <div  className="list-group-item list-group-item-action"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-building" viewBox="0 0 16 16">
+  <path d="M4 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
+  <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1zm11 0H3v14h3v-2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V15h3z"/>
+</svg> {item.setor}</div>
+                <div  className="list-group-item list-group-item-action"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-briefcase" viewBox="0 0 16 16">
+  <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5m1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0M1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5"/>
+</svg> {item.administrador}</div>
+                    <button type="button" className="btn btn-primary" onClick={()=>setFuncionario_selected('true')}>Avaliar</button>
+                </div>)
+                }
+                
+                <Chart data={data}/>
+                </>}
 
-                <div class="mb-5">
-                    <label for="exampleFormControlInput1" class="form-label">Como estão as habilidades técnicas e conhecimento?</label>
-                    <input type="number" class="form-control" id="exampleFormControlInput1" placeholder={tecnico} onChange={e=>setNota2(e.currentTarget.value)}/>
-                </div>
+                {funcionario_selected==='true'&&
+                <>
+                    <div className="mb-5 mt-6">
+                        <label for="exampleFormControlInput1" className="form-label">Qual foi o desempenho do colaborador no trabalho?</label>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={consideracao} onChange={e=>setNota1(e.currentTarget.value)}/>
+                    </div>
 
-                <div class="mb-5">
-                    <label for="exampleFormControlInput1" class="form-label">Como está o comportamento profissional?</label>
-                    <input type="number" class="form-control" id="exampleFormControlInput1" placeholder={profissional} onChange={e=>setNota3(e.currentTarget.value)}/>
-                </div>
+                    <div className="mb-5">
+                        <label for="exampleFormControlInput1" className="form-label">Como estão as habilidades técnicas e conhecimento?</label>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={tecnico} onChange={e=>setNota2(e.currentTarget.value)}/>
+                    </div>
 
-                <div class="mb-5">
-                    <label for="exampleFormControlInput1" class="form-label">Como estão as habilidades interpessoais?</label>
-                    <input type="number" class="form-control" id="exampleFormControlInput1" placeholder={interpessoal} onChange={e=>setNota4(e.currentTarget.value)}/>
-                </div>
+                    <div className="mb-5">
+                        <label for="exampleFormControlInput1" className="form-label">Como está o comportamento profissional?</label>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={profissional} onChange={e=>setNota3(e.currentTarget.value)}/>
+                    </div>
 
-                <div class="mb-5">
-                    <label for="exampleFormControlInput1" class="form-label">O colaborador tem iniciativa e responsabilidade?</label>
-                    <input type="number" class="form-control" id="exampleFormControlInput1" placeholder={iniciativa} onChange={e=>setNota5(e.currentTarget.value)}/>
-                </div>
+                    <div className="mb-5">
+                        <label for="exampleFormControlInput1" className="form-label">Como estão as habilidades interpessoais?</label>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={interpessoal} onChange={e=>setNota4(e.currentTarget.value)}/>
+                    </div>
 
-                <div class="mb-5">
-                    <label for="exampleFormControlInput1" class="form-label">É adaptável e flexível?</label>
-                    <input type="number" class="form-control" id="exampleFormControlInput1" placeholder={adaptavel} onChange={e=>setNota6(e.currentTarget.value)}/>
-                </div>
+                    <div className="mb-5">
+                        <label for="exampleFormControlInput1" className="form-label">O colaborador tem iniciativa e responsabilidade?</label>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={iniciativa} onChange={e=>setNota5(e.currentTarget.value)}/>
+                    </div>
 
-                <div class="mb-5">
-                    <label for="exampleFormControlInput1" class="form-label">É pontual?</label>
-                    <input type="number" class="form-control" id="exampleFormControlInput1" placeholder={pontualidade} onChange={e=>setNota7(e.currentTarget.value)}/>
-                </div>
+                    <div className="mb-5">
+                        <label for="exampleFormControlInput1" className="form-label">É adaptável e flexível?</label>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={adaptavel} onChange={e=>setNota6(e.currentTarget.value)}/>
+                    </div>
 
-                <div class="mb-5">
-                    <label for="exampleFormControlInput1" class="form-label">É alinhado com os objetivos e metas da empresa?</label>
-                    <input type="number" class="form-control" id="exampleFormControlInput1" placeholder={objetivo} onChange={e=>setNota8(e.currentTarget.value)}/>
-                </div>
+                    <div className="mb-5">
+                        <label for="exampleFormControlInput1" className="form-label">É pontual?</label>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={pontualidade} onChange={e=>setNota7(e.currentTarget.value)}/>
+                    </div>
 
-                <div class="mb-5">
-                    <label for="exampleFormControlInput1" class="form-label">É aberto para os feedbacks?</label>
-                    <input type="number" class="form-control" id="exampleFormControlInput1" placeholder={feedback} onChange={e=>setNota9(e.currentTarget.value)}/>
-                </div>
+                    <div className="mb-5">
+                        <label for="exampleFormControlInput1" className="form-label">É alinhado com os objetivos e metas da empresa?</label>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={objetivo} onChange={e=>setNota8(e.currentTarget.value)}/>
+                    </div>
 
-                <div class="mb-5">
-                    <label for="exampleFormControlInput1" class="form-label">Busca o desenvolvimento profissional?</label>
-                    <input type="number" class="form-control" id="exampleFormControlInput1" placeholder={desenvolvimento} onChange={e=>setNota10(e.currentTarget.value)}/>
-                </div>
+                    <div className="mb-5">
+                        <label for="exampleFormControlInput1" className="form-label">É aberto para os feedbacks?</label>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={feedback} onChange={e=>setNota9(e.currentTarget.value)}/>
+                    </div>
 
-                <input type="date" id="data-pagamento" name="data_pagamento" value={selectedDate} 
-                onChange={e=>setSelectedDate(e.currentTarget.value)} class="form-control" />
+                    <div className="mb-5">
+                        <label for="exampleFormControlInput1" className="form-label">Busca o desenvolvimento profissional?</label>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={desenvolvimento} onChange={e=>setNota10(e.currentTarget.value)}/>
+                    </div>
 
-                <p>Selected Date: {selectedDate?formatBrazilianDate(selectedDate):''}</p>
+                    <input type="date" id="data-pagamento" name="data_pagamento" value={selectedDate} 
+                    onChange={e=>setSelectedDate(e.currentTarget.value)} className="form-control" />
 
-                <button type="button" class="btn btn-primary" onClick={avaliar}>Avaliar Profissional</button>
+                    <p>Selected Date: {selectedDate?formatBrazilianDate(selectedDate):''}</p>
+
+                    <button type="button" className="btn btn-primary" onClick={avaliar}>Avaliar Profissional</button>
+                    </>
+                }
             </>}
         </>
     );

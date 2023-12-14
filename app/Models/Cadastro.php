@@ -13,7 +13,8 @@ class Cadastro extends Model
         'nome',
         'email',
         'setor',
-        'administrador'
+        'administrador',
+        'avaliacoes'
     ];
 }
 

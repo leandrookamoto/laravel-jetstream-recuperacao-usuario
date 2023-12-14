@@ -28,21 +28,21 @@ class CadastroController extends Controller
     }
  
  
-    //  public function updateDescription(Request $request, $id) {
-    //    if (TodoList::where('id', $id)->exists()) {
-    //      $description = TodoList::find($id);
-    //      $description->description = is_null($request->description) ? $description->description : $request->description;
-    //      $description->save();
+     public function updateAvaliacao(Request $request, $id) {
+       if (Cadastro::where('id', $id)->exists()) {
+         $funcionario = Cadastro::find($id);
+         $funcionario->avaliacoes = is_null($request->avaliacoes) ? $funcionario->avaliacoes : $request->avaliacoes;
+         $funcionario->save();
  
-    //      return response()->json([
-    //          "message" => "records updated successfully"
-    //      ], 200);
-    //      } else {
-    //      return response()->json([
-    //          "message" => "Description not found"
-    //      ], 404);
-    //  }
-    //  }
+         return response()->json([
+             "message" => "records updated successfully"
+         ], 200);
+         } else {
+         return response()->json([
+             "message" => "Description not found"
+         ], 404);
+     }
+     }
  
     //  public function deleteDescription ($id) {
     //     if(TodoList::where('id', $id)->exists()) {

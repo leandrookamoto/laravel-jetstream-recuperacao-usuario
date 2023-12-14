@@ -47,5 +47,7 @@ Route::middleware([
 
     Route::get('/cadastrados', [CadastroController::class, 'getAllCadastro']);
 
+    Route::put('/cadastro/{id}/update-avaliacao', [CadastroController::class, 'updateAvaliacao']);
+
 });
 
