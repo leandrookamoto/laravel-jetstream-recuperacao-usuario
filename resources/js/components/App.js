@@ -18,10 +18,10 @@ export default function HelloReact() {
     
     //Configuração do ChartJS
     const data = {
-        labels: mediaFinal.map(item => item.data),
+        labels: mediaFinal?mediaFinal.map(item => item.data):[],
         datasets: [{
           label: 'Feedback',
-          data: mediaFinal.map(item => item.media),
+          data: mediaFinal?mediaFinal.map(item => item.media):[],
           fill: false,
           borderColor: 'rgb(75, 192, 192)',
           tension: 0.1
@@ -155,21 +155,29 @@ export default function HelloReact() {
             return `${day}/${month}/${year}`;
           };
 
-          function handleFuncionario(e){
-            const cadastroFuncionario = e.currentTarget.value
-            const novoDado = listaCadastro.filter((item)=>item.nome===cadastroFuncionario);
+          function handleFuncionario(e) {
+            const cadastroFuncionario = e.currentTarget.value;
+            const novoDado = listaCadastro.filter((item) => item.nome === cadastroFuncionario);
             setDadosFuncionario(novoDado);
             setFuncionario('true');
-            setIdFuncionario(novoDado.map(item=>item.id).join());
-            let avalia = novoDado.map(item=>item.avaliacoes);
-            avalia = JSON.parse(avalia)
-
-            setMediaFinal(avalia);
-
-            console.log('Handle está funcionando!');
-            console.table(avalia);
-          };
-
+            setIdFuncionario(novoDado.map((item) => item.id).join());
+          
+            const avaliacoes = novoDado.map((item) => item.avaliacoes);
+          
+            if (avaliacoes && avaliacoes.length > 0) {
+              const parsedAvaliacoes = JSON.parse(avaliacoes[0]);
+          
+              setMediaFinal(parsedAvaliacoes);
+          
+              console.log('Handle está funcionando!');
+              console.table(parsedAvaliacoes);
+            } else {
+              // Lidar com o cenário onde não há avaliações
+              console.log('Não há avaliações disponíveis');
+              setMediaFinal([]);
+            }
+          }
+          
 
 
 

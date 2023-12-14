@@ -139,14 +139,14 @@ function HelloReact() {
 
   //Configuração do ChartJS
   var data = {
-    labels: mediaFinal.map(function (item) {
+    labels: mediaFinal ? mediaFinal.map(function (item) {
       return item.data;
-    }),
+    }) : [],
     datasets: [{
       label: 'Feedback',
-      data: mediaFinal.map(function (item) {
+      data: mediaFinal ? mediaFinal.map(function (item) {
         return item.media;
-      }),
+      }) : [],
       fill: false,
       borderColor: 'rgb(75, 192, 192)',
       tension: 0.1
@@ -323,15 +323,20 @@ function HelloReact() {
     setIdFuncionario(novoDado.map(function (item) {
       return item.id;
     }).join());
-    var avalia = novoDado.map(function (item) {
+    var avaliacoes = novoDado.map(function (item) {
       return item.avaliacoes;
     });
-    avalia = JSON.parse(avalia);
-    setMediaFinal(avalia);
-    console.log('Handle está funcionando!');
-    console.table(avalia);
+    if (avaliacoes && avaliacoes.length > 0) {
+      var parsedAvaliacoes = JSON.parse(avaliacoes[0]);
+      setMediaFinal(parsedAvaliacoes);
+      console.log('Handle está funcionando!');
+      console.table(parsedAvaliacoes);
+    } else {
+      // Lidar com o cenário onde não há avaliações
+      console.log('Não há avaliações disponíveis');
+      setMediaFinal([]);
+    }
   }
-  ;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
     children: [usuario, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
       className: "form-select",
