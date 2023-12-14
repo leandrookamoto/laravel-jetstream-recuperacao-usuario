@@ -1,9 +1,11 @@
 import ReactDOM from 'react-dom';
 import {useState, useEffect} from 'react';
 import Chart from './Chart';
+import Dialog from './Dialog';
 
-
-export default function HelloReact() {
+//Este componente está renderizando no dashboard (pasta profile)
+export default function App() {
+  //Variáveis para o desenvolvimento do sistema
     const [usuario, setUsuario] = useState();
     const [select, setSelect] = useState('cadastrar');
     const [setor, setSetor] = useState('');
@@ -16,6 +18,10 @@ export default function HelloReact() {
     const [selectedDate, setSelectedDate] = useState('');
     const [idFuncionario, setIdFuncionario] = useState(null);
     const [historico, setHistorico] = useState(false);
+
+
+    //Variável para o disparo de modal do Material UI
+    const [open,setOpen]=useState(false);
 
     
     //Configuração do ChartJS
@@ -57,6 +63,10 @@ export default function HelloReact() {
     const feedback ='Analise como o funcionário lida com feedbacks anteriores e se ele implementou melhorias com base nessas sugestões.';
     const desenvolvimento = 'Considere se o funcionário está buscando oportunidades de desenvolvimento, como participação em treinamentos, workshops ou outras atividades para aprimorar suas habilidades.';
 
+    //Variável para as validações
+    const validacao='Favor preencher todos os dados!';
+    const mesmoFuncionario = 'Você já cadastrou esse funcionário!'
+
 
 
 
@@ -93,48 +103,20 @@ export default function HelloReact() {
       }, []);
 
 
-// //Requisição para atualização do gráfico toda vez que é atualizado a mediaFinal
-//       useEffect(()=>{
-//         axios.get('/user')
-//   .then(response => {
-//     const usuarioLogado = response.data.name;
-//     setUsuario(usuarioLogado);
-
-//     // Segunda requisição feita após o sucesso da primeira
-//     axios.get('/cadastrados')
-//       .then(response => {
-//         const lista = response.data;
-//         const listaFiltrada = lista.filter(item => item.administrador === usuarioLogado);
-//         setListaCadastro(listaFiltrada);
-
-//         const id = response.data.length?lista[response.data.length-1].id:0;
-//         console.log(`Este é o id final: ${id}`)
-//         setNewId(id);
-//       })
-//       .catch(error => {
-//         // Tratar erros da segunda requisição, se necessário
-//         console.error('Erro na segunda requisição:', error);
-//       });
-
-//   })
-//   .catch(error => {
-//     // Tratar erros da primeira requisição, se necessário
-//     console.error('Erro na primeira requisição:', error);
-//   });
-//     },[mediaFinal]);
-      
-
-
+    //Função para cadastrar os funcionários
     function gravar(){
+      // Validação dos inputs
         if(!nome||!email||!setor){
-            alert('Favor colocar todos os dados!')
+          //Variável para a abertura do Dialog/Modal/Popup
+            setOpen(true);
+            // alert('Favor colocar todos os dados!');
         }else{
             const lista = [...listaCadastro, {nome: nome, email: email, setor: setor, administrador: usuario, id: newId}];
             setListaCadastro(lista);
             console.log(lista);
             setNewId(newId+1);
             
-
+    // Essa requisição é necessária para manter o id para as requisições de updates atualizadas!
     axios.post('/cadastrar-usuario', {nome: nome, email: email, setor: setor, administrador: usuario})
       .then(response => {
         console.log('Usuário cadastrado com sucesso:', response.data);
@@ -166,17 +148,14 @@ export default function HelloReact() {
         };
 
         
+        //Função que promove a avaliação do funcionário!
         function avaliar(){
             const media = (parseInt(nota1)+parseInt(nota2)+parseInt(nota3)+parseInt(nota4)+parseInt(nota5)+parseInt(nota6)+parseInt(nota7)+parseInt(nota8)+parseInt(nota9)+parseInt(nota10))/10;
-
-   
             console.log(mediaFinal);
-
             let array=[]
                 array = [...mediaFinal?mediaFinal:array, {media:media, data: selectedDate}];
                 setMediaFinal(array);
                 console.table(array);
-
 
             axios.put(`/cadastro/${idFuncionario}/update-avaliacao`, { avaliacoes: array })
             .then(response => {
@@ -188,9 +167,16 @@ export default function HelloReact() {
             });
 
 
-
-
-          
+            setNota1('');
+            setNota2('');
+            setNota3('');
+            setNota4('');
+            setNota5('');
+            setNota6('');
+            setNota7('');
+            setNota8('');
+            setNota9('');
+            setNota10('');
         };
     
         const formatBrazilianDate = (date) => {
@@ -223,12 +209,17 @@ export default function HelloReact() {
               setMediaFinal([]);
             }
           }
+
+
+          //Dialog
+
           
 
 
 
     return (
         <>
+        <Dialog open={open} descricao={validacao} handleClose={()=>setOpen(false)}/>
            Olá {usuario}. Seja bem vindo ao programa de feedbacks! Favor escolher uma das opções abaixo!
 
            {/* Seleciona se vai cadastrar ou fazer o feedback */}
@@ -240,7 +231,7 @@ export default function HelloReact() {
             {/* Aqui vai a parte do cadastro do funcionário */}
             {select==='cadastrar'&&<>
             <div className="card mt-5">
-            <h5 class="card-header">Cadastro de funcionários</h5>
+            <h5 className="card-header">Cadastro de funcionários</h5>
             <div className="card-body">
             <div className="mb-1 mt-6">
                 <label htmlFor="exampleFormControlInput1" className="form-label">Nome</label>
@@ -266,15 +257,32 @@ export default function HelloReact() {
             </div>
 
             
-       
+            {/* Modal */}
+            <div className="modal" tabindex="-1" role="dialog" id="meuModal">
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">Alerta</h5>
+                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                  </div>
+                  <div className="modal-body">
+                    <p>{validacao}</p>
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
             </>}
+            
 
             {select==='funcionario'&&
             <>
 
-            <div class="card mt-5">
-                <h5 class="card-header">Sistema de feedback</h5>
-                <div class="card-body">
+            <div className="card mt-5">
+                <h5 className="card-header">Sistema de feedback</h5>
+                <div className="card-body">
                 <select className="form-select mt-5 mb-3" aria-label="Default select example" onChange={handleFuncionario}>
                     <option selected>Escolha qual funcionário</option>
                     {listaCadastro.map((item,index)=><option key={index} value={item.nome}>
@@ -377,6 +385,6 @@ export default function HelloReact() {
     );
 }
 
-if (document.getElementById('hello-react')) {
-    ReactDOM.render(<HelloReact />, document.getElementById('hello-react'));
+if (document.getElementById('dashboard')) {
+    ReactDOM.render(<App />, document.getElementById('dashboard'));
 }
