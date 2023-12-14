@@ -13098,35 +13098,42 @@ function App() {
 
   //Função que promove a avaliação do funcionário!
   function avaliar() {
-    var media = (parseInt(nota1) + parseInt(nota2) + parseInt(nota3) + parseInt(nota4) + parseInt(nota5) + parseInt(nota6) + parseInt(nota7) + parseInt(nota8) + parseInt(nota9) + parseInt(nota10)) / 10;
-    console.log(mediaFinal);
-    var array = [];
-    array = [].concat(_toConsumableArray(mediaFinal ? mediaFinal : array), [{
-      media: media,
-      data: selectedDate
-    }]);
-    setMediaFinal(array);
-    console.table(array);
-    axios.put("/cadastro/".concat(idFuncionario, "/update-avaliacao"), {
-      avaliacoes: array
-    }).then(function (response) {
-      console.log('Resposta do servidor:', response.data);
-      // Aqui você pode atualizar o estado ou fazer outras ações com base na resposta
-    })["catch"](function (error) {
-      console.error('Erro ao enviar requisição:', error);
-    });
-    setNota1('');
-    setNota2('');
-    setNota3('');
-    setNota4('');
-    setNota5('');
-    setNota6('');
-    setNota7('');
-    setNota8('');
-    setNota9('');
-    setNota10('');
+    if (!nota1 || !nota2 || !nota3 || !nota4 || !nota5 || !nota6 || !nota7 || !nota8 || !nota9 || !nota10 || !selectedDate) {
+      setOpen(true);
+    } else {
+      var media = (parseInt(nota1) + parseInt(nota2) + parseInt(nota3) + parseInt(nota4) + parseInt(nota5) + parseInt(nota6) + parseInt(nota7) + parseInt(nota8) + parseInt(nota9) + parseInt(nota10)) / 10;
+      console.log(mediaFinal);
+      var array = [];
+      array = [].concat(_toConsumableArray(mediaFinal ? mediaFinal : array), [{
+        media: media,
+        data: selectedDate
+      }]);
+      setMediaFinal(array);
+      console.table(array);
+      axios.put("/cadastro/".concat(idFuncionario, "/update-avaliacao"), {
+        avaliacoes: array
+      }).then(function (response) {
+        console.log('Resposta do servidor:', response.data);
+        // Aqui você pode atualizar o estado ou fazer outras ações com base na resposta
+      })["catch"](function (error) {
+        console.error('Erro ao enviar requisição:', error);
+      });
+      setNota1('');
+      setNota2('');
+      setNota3('');
+      setNota4('');
+      setNota5('');
+      setNota6('');
+      setNota7('');
+      setNota8('');
+      setNota9('');
+      setNota10('');
+      setSelectedDate('');
+    }
   }
   ;
+
+  //Função para acertar com data brasileira
   var formatBrazilianDate = function formatBrazilianDate(date) {
     var _date$split = date.split('-'),
       _date$split2 = _slicedToArray(_date$split, 3),
@@ -13135,6 +13142,8 @@ function App() {
       day = _date$split2[2];
     return "".concat(day, "/").concat(month, "/").concat(year);
   };
+
+  //Função que controla o onChange do select dos funcionários do feedback
   function handleFuncionario(e) {
     var cadastroFuncionario = e.currentTarget.value;
     console.log(cadastroFuncionario);
@@ -13163,9 +13172,6 @@ function App() {
       setMediaFinal([]);
     }
   }
-
-  //Dialog
-
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Dialog__WEBPACK_IMPORTED_MODULE_3__["default"], {
       open: open,
@@ -13412,7 +13418,8 @@ function App() {
                 placeholder: consideracao,
                 onChange: function onChange(e) {
                   return setNota1(e.currentTarget.value);
-                }
+                },
+                value: nota1
               })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
               className: "mb-5",
@@ -13427,7 +13434,8 @@ function App() {
                 placeholder: tecnico,
                 onChange: function onChange(e) {
                   return setNota2(e.currentTarget.value);
-                }
+                },
+                value: nota2
               })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
               className: "mb-5",
@@ -13442,7 +13450,8 @@ function App() {
                 placeholder: profissional,
                 onChange: function onChange(e) {
                   return setNota3(e.currentTarget.value);
-                }
+                },
+                value: nota3
               })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
               className: "mb-5",
@@ -13457,7 +13466,8 @@ function App() {
                 placeholder: interpessoal,
                 onChange: function onChange(e) {
                   return setNota4(e.currentTarget.value);
-                }
+                },
+                value: nota4
               })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
               className: "mb-5",
@@ -13472,7 +13482,8 @@ function App() {
                 placeholder: iniciativa,
                 onChange: function onChange(e) {
                   return setNota5(e.currentTarget.value);
-                }
+                },
+                value: nota5
               })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
               className: "mb-5",
@@ -13487,7 +13498,8 @@ function App() {
                 placeholder: adaptavel,
                 onChange: function onChange(e) {
                   return setNota6(e.currentTarget.value);
-                }
+                },
+                value: nota6
               })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
               className: "mb-5",
@@ -13502,7 +13514,8 @@ function App() {
                 placeholder: pontualidade,
                 onChange: function onChange(e) {
                   return setNota7(e.currentTarget.value);
-                }
+                },
+                value: nota7
               })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
               className: "mb-5",
@@ -13517,7 +13530,8 @@ function App() {
                 placeholder: objetivo,
                 onChange: function onChange(e) {
                   return setNota8(e.currentTarget.value);
-                }
+                },
+                value: nota8
               })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
               className: "mb-5",
@@ -13532,7 +13546,8 @@ function App() {
                 placeholder: feedback,
                 onChange: function onChange(e) {
                   return setNota9(e.currentTarget.value);
-                }
+                },
+                value: nota9
               })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
               className: "mb-5",
@@ -13547,7 +13562,8 @@ function App() {
                 placeholder: desenvolvimento,
                 onChange: function onChange(e) {
                   return setNota10(e.currentTarget.value);
-                }
+                },
+                value: nota10
               })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
               type: "date",

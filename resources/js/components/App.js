@@ -111,6 +111,8 @@ export default function App() {
             setOpen(true);
             // alert('Favor colocar todos os dados!');
         }else{
+
+        
             const lista = [...listaCadastro, {nome: nome, email: email, setor: setor, administrador: usuario, id: newId}];
             setListaCadastro(lista);
             console.log(lista);
@@ -150,6 +152,10 @@ export default function App() {
         
         //Função que promove a avaliação do funcionário!
         function avaliar(){
+
+          if(!nota1||!nota2||!nota3||!nota4||!nota5||!nota6||!nota7||!nota8||!nota9||!nota10||!selectedDate){
+            setOpen(true);
+          }else{
             const media = (parseInt(nota1)+parseInt(nota2)+parseInt(nota3)+parseInt(nota4)+parseInt(nota5)+parseInt(nota6)+parseInt(nota7)+parseInt(nota8)+parseInt(nota9)+parseInt(nota10))/10;
             console.log(mediaFinal);
             let array=[]
@@ -165,8 +171,7 @@ export default function App() {
             .catch(error => {
               console.error('Erro ao enviar requisição:', error);
             });
-
-
+          
             setNota1('');
             setNota2('');
             setNota3('');
@@ -177,13 +182,17 @@ export default function App() {
             setNota8('');
             setNota9('');
             setNota10('');
+            setSelectedDate('');
+          }
         };
     
+        //Função para acertar com data brasileira
         const formatBrazilianDate = (date) => {
             const [year, month, day] = date.split('-');
             return `${day}/${month}/${year}`;
           };
 
+          //Função que controla o onChange do select dos funcionários do feedback
           function handleFuncionario(e) {
             const cadastroFuncionario = e.currentTarget.value;
             console.log(cadastroFuncionario)
@@ -211,8 +220,7 @@ export default function App() {
           }
 
 
-          //Dialog
-
+   
           
 
 
@@ -320,52 +328,52 @@ export default function App() {
                 <h3 className='mt-3'>Formulário para o feedback</h3>
                     <div className="mb-5 mt-6">
                         <label htmlFor="exampleFormControlInput1" className="form-label">Qual foi o desempenho do colaborador no trabalho?</label>
-                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={consideracao} onChange={e=>setNota1(e.currentTarget.value)}/>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={consideracao} onChange={e=>setNota1(e.currentTarget.value)} value={nota1}/>
                     </div>
 
                     <div className="mb-5">
                         <label htmlFor="exampleFormControlInput1" className="form-label">Como estão as habilidades técnicas e conhecimento?</label>
-                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={tecnico} onChange={e=>setNota2(e.currentTarget.value)}/>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={tecnico} onChange={e=>setNota2(e.currentTarget.value)} value={nota2}/>
                     </div>
 
                     <div className="mb-5">
                         <label htmlFor="exampleFormControlInput1" className="form-label">Como está o comportamento profissional?</label>
-                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={profissional} onChange={e=>setNota3(e.currentTarget.value)}/>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={profissional} onChange={e=>setNota3(e.currentTarget.value)} value={nota3}/>
                     </div>
 
                     <div className="mb-5">
                         <label htmlFor="exampleFormControlInput1" className="form-label">Como estão as habilidades interpessoais?</label>
-                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={interpessoal} onChange={e=>setNota4(e.currentTarget.value)}/>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={interpessoal} onChange={e=>setNota4(e.currentTarget.value)} value={nota4}/>
                     </div>
 
                     <div className="mb-5">
                         <label htmlFor="exampleFormControlInput1" className="form-label">O colaborador tem iniciativa e responsabilidade?</label>
-                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={iniciativa} onChange={e=>setNota5(e.currentTarget.value)}/>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={iniciativa} onChange={e=>setNota5(e.currentTarget.value)} value={nota5}/>
                     </div>
 
                     <div className="mb-5">
                         <label htmlFor="exampleFormControlInput1" className="form-label">É adaptável e flexível?</label>
-                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={adaptavel} onChange={e=>setNota6(e.currentTarget.value)}/>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={adaptavel} onChange={e=>setNota6(e.currentTarget.value)} value={nota6}/>
                     </div>
 
                     <div className="mb-5">
                         <label htmlFor="exampleFormControlInput1" className="form-label">É pontual?</label>
-                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={pontualidade} onChange={e=>setNota7(e.currentTarget.value)}/>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={pontualidade} onChange={e=>setNota7(e.currentTarget.value)} value={nota7}/>
                     </div>
 
                     <div className="mb-5">
                         <label htmlFor="exampleFormControlInput1" className="form-label">É alinhado com os objetivos e metas da empresa?</label>
-                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={objetivo} onChange={e=>setNota8(e.currentTarget.value)}/>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={objetivo} onChange={e=>setNota8(e.currentTarget.value)} value={nota8}/>
                     </div>
 
                     <div className="mb-5">
                         <label htmlFor="exampleFormControlInput1" className="form-label">É aberto para os feedbacks?</label>
-                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={feedback} onChange={e=>setNota9(e.currentTarget.value)}/>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={feedback} onChange={e=>setNota9(e.currentTarget.value)} value={nota9}/>
                     </div>
 
                     <div className="mb-5">
                         <label htmlFor="exampleFormControlInput1" className="form-label">Busca o desenvolvimento profissional?</label>
-                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={desenvolvimento} onChange={e=>setNota10(e.currentTarget.value)}/>
+                        <input type="number" className="form-control" id="exampleFormControlInput1" placeholder={desenvolvimento} onChange={e=>setNota10(e.currentTarget.value)} value={nota10}/>
                     </div>
 
                     <input type="date" id="data-pagamento" name="data_pagamento" value={selectedDate} 
