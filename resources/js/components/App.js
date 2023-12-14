@@ -22,6 +22,7 @@ export default function App() {
 
     //Variável para o disparo de modal do Material UI
     const [open,setOpen]=useState(false);
+    const [openCadastro, setOpenCadastro] = useState(false);
 
     
     //Configuração do ChartJS
@@ -112,42 +113,51 @@ export default function App() {
             // alert('Favor colocar todos os dados!');
         }else{
 
-        
-            const lista = [...listaCadastro, {nome: nome, email: email, setor: setor, administrador: usuario, id: newId}];
+          const novoCadastro = { nome: nome, email: email, setor: setor, administrador: usuario, id: newId };
+
+          // Verifica se o e-mail já existe na lista
+          const emailJaExiste = listaCadastro.length > 0 && email !== '' && listaCadastro.some(item => item.email === email);
+      
+          if (emailJaExiste) {
+            console.log('O e-mail já existe na lista!');
+            setOpenCadastro(true);
+          } else {
+            const lista = [...listaCadastro, novoCadastro];
             setListaCadastro(lista);
-            console.log(lista);
-            setNewId(newId+1);
+            setNewId(newId + 1);
             
-    // Essa requisição é necessária para manter o id para as requisições de updates atualizadas!
-    axios.post('/cadastrar-usuario', {nome: nome, email: email, setor: setor, administrador: usuario})
-      .then(response => {
-        console.log('Usuário cadastrado com sucesso:', response.data);
-        // Lidar com a resposta do servidor após o cadastro ser realizado com sucesso
-      })
-      axios.get('/cadastrados')
-              .then(response => {
-                const lista = response.data;
-                const listaFiltrada = lista.filter(item => item.administrador === usuario);
-                setListaCadastro(listaFiltrada);
+        // Essa requisição é necessária para manter o id para as requisições de updates atualizadas!
+        axios.post('/cadastrar-usuario', {nome: nome, email: email, setor: setor, administrador: usuario})
+          .then(response => {
+            console.log('Usuário cadastrado com sucesso:', response.data);
+            // Lidar com a resposta do servidor após o cadastro ser realizado com sucesso
+          })
+          axios.get('/cadastrados')
+                  .then(response => {
+                    const lista = response.data;
+                    const listaFiltrada = lista.filter(item => item.administrador === usuario);
+                    setListaCadastro(listaFiltrada);
 
-                const id = response.data.length?lista[response.data.length-1].id:0;
-                console.log(`Este é o id final: ${id}`)
-                setIdFuncionario(id);
-              })
-              .catch(error => {
-                // Tratar erros da segunda requisição, se necessário
-                console.error('Erro na segunda requisição:', error);
-              })
+                    const id = response.data.length?lista[response.data.length-1].id:0;
+                    console.log(`Este é o id final: ${id}`)
+                    setIdFuncionario(id);
+                  })
+                  .catch(error => {
+                    // Tratar erros da segunda requisição, se necessário
+                    console.error('Erro na segunda requisição:', error);
+                  })
 
-      .catch(error => {
-        console.error('Erro ao cadastrar usuário:', error);
-        // Lidar com erros que ocorreram durante o cadastro
-      });
-     }
-            setNome('');
-            setEmail('');
-            setSetor('');
-        };
+          .catch(error => {
+            console.error('Erro ao cadastrar usuário:', error);
+            // Lidar com erros que ocorreram durante o cadastro
+          });
+        }
+                setNome('');
+                setEmail('');
+                setSetor('');
+      }
+                
+            };
 
         
         //Função que promove a avaliação do funcionário!
@@ -228,6 +238,7 @@ export default function App() {
     return (
         <>
         <Dialog open={open} descricao={validacao} handleClose={()=>setOpen(false)}/>
+        <Dialog open={openCadastro} descricao={mesmoFuncionario} handleClose={()=>setOpenCadastro(false)}/>
            Olá {usuario}. Seja bem vindo ao programa de feedbacks! Favor escolher uma das opções abaixo!
 
            {/* Seleciona se vai cadastrar ou fazer o feedback */}
