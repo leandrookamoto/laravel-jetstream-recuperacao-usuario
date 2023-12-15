@@ -18,6 +18,9 @@ export default function App() {
     const [selectedDate, setSelectedDate] = useState('');
     const [idFuncionario, setIdFuncionario] = useState(null);
     const [confirmaApagar, setConfirmaApagar] = useState(false);
+    const [message,setMessage] = useState(null);
+    const [selectedFuncionario, setSelectedFuncionario] = useState('Escolha qual funcionário');
+
  
 
 
@@ -221,6 +224,7 @@ export default function App() {
             setDadosFuncionario(novoDado);
             setFuncionario('true');
             setIdFuncionario(novoDado.map((item) => item.id).join());
+            setSelectedFuncionario(cadastroFuncionario);
 
             console.log('Este é o idFuncionario '+novoDado.map((item) => item.id).join());
           
@@ -244,9 +248,33 @@ export default function App() {
             if(!confirmaApagar){
               setValidacaoApagar(true);
             }else{
-              setConfirmaApagar(false);
-            }
+
+              //Lógica para apagar o funcionário selecionado
+                axios.delete(`/deleteFuncionario/${idFuncionario}`)
+                .then(
+                  
+                  axios.get('/cadastrados')
+              .then(response => {
+                const lista = response.data;
+                const listaFiltrada = lista.filter(item => item.administrador === usuario);
+                setListaCadastro(listaFiltrada);
+
+                const id = response.data.length?lista[response.data.length-1].id:0;
+                console.log(`Este é o id final: ${id}`)
+                setNewId(id);
+
+                setDadosFuncionario([]);
+                setSelectedFuncionario('Escolha qual funcionário');
+                setConfirmaApagar(confirmaApagar=>!confirmaApagar);
+              })
+                );
+          
+               
+              }
+            
           };
+
+          
 
           
 
@@ -316,6 +344,7 @@ export default function App() {
             <div className="card mt-5">
                 <h5 className="card-header">Sistema de feedback</h5>
                 <div className="card-body">
+ 
                 <select className="form-select mt-5 mb-3" aria-label="Default select example" onChange={handleFuncionario}>
                     <option selected>Escolha qual funcionário</option>
                     {listaCadastro.map((item,index)=><option key={index} value={item.nome}>

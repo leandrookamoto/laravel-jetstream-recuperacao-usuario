@@ -12929,32 +12929,40 @@ function App() {
     _useState24 = _slicedToArray(_useState23, 2),
     confirmaApagar = _useState24[0],
     setConfirmaApagar = _useState24[1];
+  var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
+    _useState26 = _slicedToArray(_useState25, 2),
+    message = _useState26[0],
+    setMessage = _useState26[1];
+  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('Escolha qual funcionário'),
+    _useState28 = _slicedToArray(_useState27, 2),
+    selectedFuncionario = _useState28[0],
+    setSelectedFuncionario = _useState28[1];
 
   //Variável para o disparo de modal do Material UI
-  var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
-    _useState26 = _slicedToArray(_useState25, 2),
-    open = _useState26[0],
-    setOpen = _useState26[1];
-  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
-    _useState28 = _slicedToArray(_useState27, 2),
-    openCadastro = _useState28[0],
-    setOpenCadastro = _useState28[1];
   var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
     _useState30 = _slicedToArray(_useState29, 2),
-    historico = _useState30[0],
-    setHistorico = _useState30[1];
+    open = _useState30[0],
+    setOpen = _useState30[1];
   var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
     _useState32 = _slicedToArray(_useState31, 2),
-    cadastroSucesso = _useState32[0],
-    setCadastroSucesso = _useState32[1];
+    openCadastro = _useState32[0],
+    setOpenCadastro = _useState32[1];
   var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
     _useState34 = _slicedToArray(_useState33, 2),
-    validacaoNotas = _useState34[0],
-    setValidacaoNotas = _useState34[1];
+    historico = _useState34[0],
+    setHistorico = _useState34[1];
   var _useState35 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
     _useState36 = _slicedToArray(_useState35, 2),
-    validacaoApagar = _useState36[0],
-    setValidacaoApagar = _useState36[1];
+    cadastroSucesso = _useState36[0],
+    setCadastroSucesso = _useState36[1];
+  var _useState37 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState38 = _slicedToArray(_useState37, 2),
+    validacaoNotas = _useState38[0],
+    setValidacaoNotas = _useState38[1];
+  var _useState39 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState40 = _slicedToArray(_useState39, 2),
+    validacaoApagar = _useState40[0],
+    setValidacaoApagar = _useState40[1];
 
   //Configuração do ChartJS
   var data = {
@@ -12973,54 +12981,54 @@ function App() {
   };
 
   //Variáveis para as notas
-  var _useState37 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
-    _useState38 = _slicedToArray(_useState37, 2),
-    nome = _useState38[0],
-    setNome = _useState38[1];
-  var _useState39 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
-    _useState40 = _slicedToArray(_useState39, 2),
-    email = _useState40[0],
-    setEmail = _useState40[1];
   var _useState41 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState42 = _slicedToArray(_useState41, 2),
-    nota1 = _useState42[0],
-    setNota1 = _useState42[1];
+    nome = _useState42[0],
+    setNome = _useState42[1];
   var _useState43 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState44 = _slicedToArray(_useState43, 2),
-    nota2 = _useState44[0],
-    setNota2 = _useState44[1];
+    email = _useState44[0],
+    setEmail = _useState44[1];
   var _useState45 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState46 = _slicedToArray(_useState45, 2),
-    nota3 = _useState46[0],
-    setNota3 = _useState46[1];
+    nota1 = _useState46[0],
+    setNota1 = _useState46[1];
   var _useState47 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState48 = _slicedToArray(_useState47, 2),
-    nota4 = _useState48[0],
-    setNota4 = _useState48[1];
+    nota2 = _useState48[0],
+    setNota2 = _useState48[1];
   var _useState49 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState50 = _slicedToArray(_useState49, 2),
-    nota5 = _useState50[0],
-    setNota5 = _useState50[1];
+    nota3 = _useState50[0],
+    setNota3 = _useState50[1];
   var _useState51 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState52 = _slicedToArray(_useState51, 2),
-    nota6 = _useState52[0],
-    setNota6 = _useState52[1];
+    nota4 = _useState52[0],
+    setNota4 = _useState52[1];
   var _useState53 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState54 = _slicedToArray(_useState53, 2),
-    nota7 = _useState54[0],
-    setNota7 = _useState54[1];
+    nota5 = _useState54[0],
+    setNota5 = _useState54[1];
   var _useState55 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState56 = _slicedToArray(_useState55, 2),
-    nota8 = _useState56[0],
-    setNota8 = _useState56[1];
+    nota6 = _useState56[0],
+    setNota6 = _useState56[1];
   var _useState57 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState58 = _slicedToArray(_useState57, 2),
-    nota9 = _useState58[0],
-    setNota9 = _useState58[1];
+    nota7 = _useState58[0],
+    setNota7 = _useState58[1];
   var _useState59 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState60 = _slicedToArray(_useState59, 2),
-    nota10 = _useState60[0],
-    setNota10 = _useState60[1];
+    nota8 = _useState60[0],
+    setNota8 = _useState60[1];
+  var _useState61 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState62 = _slicedToArray(_useState61, 2),
+    nota9 = _useState62[0],
+    setNota9 = _useState62[1];
+  var _useState63 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState64 = _slicedToArray(_useState63, 2),
+    nota10 = _useState64[0],
+    setNota10 = _useState64[1];
 
   //Variáveis para os placeholders
   var consideracao = 'Leve em consideração  a qualidade do trabalho realizado pelo funcionário, sua eficiência, precisão e produtividade.';
@@ -13191,6 +13199,7 @@ function App() {
     setIdFuncionario(novoDado.map(function (item) {
       return item.id;
     }).join());
+    setSelectedFuncionario(cadastroFuncionario);
     console.log('Este é o idFuncionario ' + novoDado.map(function (item) {
       return item.id;
     }).join());
@@ -13212,7 +13221,22 @@ function App() {
     if (!confirmaApagar) {
       setValidacaoApagar(true);
     } else {
-      setConfirmaApagar(false);
+      //Lógica para apagar o funcionário selecionado
+      axios["delete"]("/deleteFuncionario/".concat(idFuncionario)).then(axios.get('/cadastrados').then(function (response) {
+        var lista = response.data;
+        var listaFiltrada = lista.filter(function (item) {
+          return item.administrador === usuario;
+        });
+        setListaCadastro(listaFiltrada);
+        var id = response.data.length ? lista[response.data.length - 1].id : 0;
+        console.log("Este \xE9 o id final: ".concat(id));
+        setNewId(id);
+        setDadosFuncionario([]);
+        setSelectedFuncionario('Escolha qual funcionário');
+        setConfirmaApagar(function (confirmaApagar) {
+          return !confirmaApagar;
+        });
+      }));
     }
   }
   ;

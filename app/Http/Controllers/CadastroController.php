@@ -44,18 +44,18 @@ class CadastroController extends Controller
      }
      }
  
-    //  public function deleteDescription ($id) {
-    //     if(TodoList::where('id', $id)->exists()) {
-    //      $description = TodoList::find($id);
-    //      $description->delete();
+     public function deleteFuncionario ($id) {
+        if(Cadastro::where('id', $id)->exists()) {
+         $funcionario = Cadastro::find($id);
+         $funcionario->delete();
  
-    //      return response()->json([
-    //        "message" => "records deleted"
-    //      ], 202);
-    //    } else {
-    //      return response()->json([
-    //        "message" => "Description not found"
-    //      ], 404);
-    //    }
-     //}
+         return response()->json([
+           "message" => "records deleted"
+         ], 202);
+       } else {
+         return response()->json([
+           "message" => "Description not found"
+         ], 404);
+       }
+     }
 }
