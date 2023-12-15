@@ -13159,6 +13159,7 @@ function App() {
       }).then(function (response) {
         console.log('Resposta do servidor:', response.data);
         // Aqui você pode atualizar o estado ou fazer outras ações com base na resposta
+        setHistorico(true);
       })["catch"](function (error) {
         console.error('Erro ao enviar requisição:', error);
       });
@@ -13241,14 +13242,72 @@ function App() {
     }
   }
   ;
+
+  //Função para confirmar se realmente quer apagar registro
   function confirmacaoApagar() {
     setValidacaoApagar(false);
     setConfirmaApagar(true);
   }
+
+  //Função para lidar com o primeiro select e para resetar os dados funcionário
   function handleSelect(e) {
     setSelect(e.currentTarget.value);
     setDadosFuncionario([]);
   }
+  function apagarPrimeiro() {
+    var array = mediaFinal;
+    array.shift();
+    console.log(array);
+    setMediaFinal(array);
+    axios.put("/cadastro/".concat(idFuncionario, "/update-avaliacao"), {
+      avaliacoes: array
+    }).then(function (response) {
+      console.log('Resposta do servidor:', response.data);
+      axios.get('/cadastrados').then(function (response) {
+        var lista = response.data;
+        var listaFiltrada = lista.filter(function (item) {
+          return item.administrador === usuario;
+        });
+        setListaCadastro(listaFiltrada);
+        var id = response.data.length ? lista[response.data.length - 1].id : 0;
+        console.log("Este \xE9 o id final: ".concat(id));
+        setNewId(id);
+      })["catch"](function (error) {
+        // Tratar erros da segunda requisição, se necessário
+        console.error('Erro na segunda requisição:', error);
+      });
+    })["catch"](function (error) {
+      console.error('Erro ao enviar requisição:', error);
+    });
+  }
+  ;
+  function apagarUltimo() {
+    var array = mediaFinal;
+    array.pop();
+    console.log(array);
+    setMediaFinal(array);
+    axios.put("/cadastro/".concat(idFuncionario, "/update-avaliacao"), {
+      avaliacoes: array
+    }).then(function (response) {
+      console.log('Resposta do servidor:', response.data);
+      axios.get('/cadastrados').then(function (response) {
+        var lista = response.data;
+        var listaFiltrada = lista.filter(function (item) {
+          return item.administrador === usuario;
+        });
+        setListaCadastro(listaFiltrada);
+        var id = response.data.length ? lista[response.data.length - 1].id : 0;
+        console.log("Este \xE9 o id final: ".concat(id));
+        setNewId(id);
+      })["catch"](function (error) {
+        // Tratar erros da segunda requisição, se necessário
+        console.error('Erro na segunda requisição:', error);
+      });
+    })["catch"](function (error) {
+      console.error('Erro ao enviar requisição:', error);
+    });
+  }
+  ;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Dialog__WEBPACK_IMPORTED_MODULE_3__["default"], {
       open: open,
@@ -13667,10 +13726,20 @@ function App() {
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
             type: "button",
             className: "btn btn-primary ml-3",
+            onClick: apagarPrimeiro,
+            children: " Apagar Primeiro Registro"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            type: "button",
+            className: "btn btn-primary ml-3",
+            onClick: apagarUltimo,
+            children: " Apagar \xDAltimo Registro"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            type: "button",
+            className: "btn btn-primary ml-3",
             onClick: function onClick() {
               return setHistorico(false);
             },
-            children: "Fechar hist\xF3rico"
+            children: "Fechar Hist\xF3rico"
           })]
         })]
       })

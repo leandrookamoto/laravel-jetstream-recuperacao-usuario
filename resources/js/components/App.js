@@ -191,6 +191,7 @@ export default function App() {
             .then(response => {
               console.log('Resposta do servidor:', response.data);
               // Aqui você pode atualizar o estado ou fazer outras ações com base na resposta
+              setHistorico(true);
             })
             .catch(error => {
               console.error('Erro ao enviar requisição:', error);
@@ -278,17 +279,78 @@ export default function App() {
           
 
           
-
+          //Função para confirmar se realmente quer apagar registro
           function confirmacaoApagar(){
             setValidacaoApagar(false);
             setConfirmaApagar(true);
           }
 
 
+          //Função para lidar com o primeiro select e para resetar os dados funcionário
           function handleSelect(e){
             setSelect(e.currentTarget.value);
             setDadosFuncionario([]);
           }
+
+          function apagarPrimeiro(){
+
+            let array=mediaFinal;
+            array.shift();
+            console.log(array);
+            setMediaFinal(array);
+
+            axios.put(`/cadastro/${idFuncionario}/update-avaliacao`, { avaliacoes: array })
+            .then(response => {
+              console.log('Resposta do servidor:', response.data);
+              axios.get('/cadastrados')
+              .then(response => {
+                const lista = response.data;
+                const listaFiltrada = lista.filter(item => item.administrador === usuario);
+                setListaCadastro(listaFiltrada);
+
+                const id = response.data.length?lista[response.data.length-1].id:0;
+                console.log(`Este é o id final: ${id}`)
+                setNewId(id);
+              })
+              .catch(error => {
+                // Tratar erros da segunda requisição, se necessário
+                console.error('Erro na segunda requisição:', error);
+              });
+            })
+            .catch(error => {
+              console.error('Erro ao enviar requisição:', error);
+            });
+          };
+
+
+          function apagarUltimo(){
+            let array=mediaFinal;
+            array.pop();
+            console.log(array);
+            setMediaFinal(array);
+
+            axios.put(`/cadastro/${idFuncionario}/update-avaliacao`, { avaliacoes: array })
+            .then(response => {
+              console.log('Resposta do servidor:', response.data);
+              axios.get('/cadastrados')
+              .then(response => {
+                const lista = response.data;
+                const listaFiltrada = lista.filter(item => item.administrador === usuario);
+                setListaCadastro(listaFiltrada);
+
+                const id = response.data.length?lista[response.data.length-1].id:0;
+                console.log(`Este é o id final: ${id}`)
+                setNewId(id);
+              })
+              .catch(error => {
+                // Tratar erros da segunda requisição, se necessário
+                console.error('Erro na segunda requisição:', error);
+              });
+            })
+            .catch(error => {
+              console.error('Erro ao enviar requisição:', error);
+            });
+          };
 
 
    
@@ -449,7 +511,9 @@ export default function App() {
                 }
                 </div>
                 {historico&& <div className='m-3'><h3>Histórico de feedback</h3><Chart data={data}/>
-                <button type="button" className="btn btn-primary ml-3" onClick={()=>setHistorico(false)}>Fechar histórico</button>
+                <button type="button" className="btn btn-primary ml-3" onClick={apagarPrimeiro}> Apagar Primeiro Registro</button>
+                <button type="button" className="btn btn-primary ml-3" onClick={apagarUltimo}> Apagar Último Registro</button>
+                <button type="button" className="btn btn-primary ml-3" onClick={()=>setHistorico(false)}>Fechar Histórico</button>
                 </div>
                 
                 }
