@@ -18,6 +18,7 @@ export default function App() {
     const [selectedDate, setSelectedDate] = useState('');
     const [idFuncionario, setIdFuncionario] = useState(null);
     const [historico, setHistorico] = useState(false);
+    const [cadastroSucesso, setCadastroSucesso] = useState(false);
 
 
     //Variável para o disparo de modal do Material UI
@@ -66,7 +67,8 @@ export default function App() {
 
     //Variável para as validações
     const validacao='Favor preencher todos os dados!';
-    const mesmoFuncionario = 'Você já cadastrou esse funcionário!'
+    const mesmoFuncionario = 'Você já cadastrou esse funcionário!';
+    const sucessoCadastro = 'Cadastro realizado com sucesso!';
 
 
 
@@ -130,6 +132,7 @@ export default function App() {
         axios.post('/cadastrar-usuario', {nome: nome, email: email, setor: setor, administrador: usuario})
           .then(response => {
             console.log('Usuário cadastrado com sucesso:', response.data);
+            setCadastroSucesso(true);
             // Lidar com a resposta do servidor após o cadastro ser realizado com sucesso
           })
           axios.get('/cadastrados')
@@ -239,6 +242,7 @@ export default function App() {
         <>
         <Dialog open={open} descricao={validacao} handleClose={()=>setOpen(false)}/>
         <Dialog open={openCadastro} descricao={mesmoFuncionario} handleClose={()=>setOpenCadastro(false)}/>
+        <Dialog open={cadastroSucesso} descricao={sucessoCadastro} handleClose={()=>setCadastroSucesso(false)} Title='Cadastro'/>
            Olá {usuario}. Seja bem vindo ao programa de feedbacks! Favor escolher uma das opções abaixo!
 
            {/* Seleciona se vai cadastrar ou fazer o feedback */}
@@ -276,23 +280,7 @@ export default function App() {
             </div>
 
             
-            {/* Modal */}
-            <div className="modal" tabindex="-1" role="dialog" id="meuModal">
-              <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h5 className="modal-title">Alerta</h5>
-                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                  </div>
-                  <div className="modal-body">
-                    <p>{validacao}</p>
-                  </div>
-                  <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+
             </>}
             
 

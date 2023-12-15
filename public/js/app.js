@@ -12929,16 +12929,20 @@ function App() {
     _useState24 = _slicedToArray(_useState23, 2),
     historico = _useState24[0],
     setHistorico = _useState24[1];
-
-  //Variável para o disparo de modal do Material UI
   var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
     _useState26 = _slicedToArray(_useState25, 2),
-    open = _useState26[0],
-    setOpen = _useState26[1];
+    cadastroSucesso = _useState26[0],
+    setCadastroSucesso = _useState26[1];
+
+  //Variável para o disparo de modal do Material UI
   var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
     _useState28 = _slicedToArray(_useState27, 2),
-    openCadastro = _useState28[0],
-    setOpenCadastro = _useState28[1];
+    open = _useState28[0],
+    setOpen = _useState28[1];
+  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState30 = _slicedToArray(_useState29, 2),
+    openCadastro = _useState30[0],
+    setOpenCadastro = _useState30[1];
 
   //Configuração do ChartJS
   var data = {
@@ -12957,54 +12961,54 @@ function App() {
   };
 
   //Variáveis para as notas
-  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
-    _useState30 = _slicedToArray(_useState29, 2),
-    nome = _useState30[0],
-    setNome = _useState30[1];
   var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState32 = _slicedToArray(_useState31, 2),
-    email = _useState32[0],
-    setEmail = _useState32[1];
+    nome = _useState32[0],
+    setNome = _useState32[1];
   var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState34 = _slicedToArray(_useState33, 2),
-    nota1 = _useState34[0],
-    setNota1 = _useState34[1];
+    email = _useState34[0],
+    setEmail = _useState34[1];
   var _useState35 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState36 = _slicedToArray(_useState35, 2),
-    nota2 = _useState36[0],
-    setNota2 = _useState36[1];
+    nota1 = _useState36[0],
+    setNota1 = _useState36[1];
   var _useState37 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState38 = _slicedToArray(_useState37, 2),
-    nota3 = _useState38[0],
-    setNota3 = _useState38[1];
+    nota2 = _useState38[0],
+    setNota2 = _useState38[1];
   var _useState39 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState40 = _slicedToArray(_useState39, 2),
-    nota4 = _useState40[0],
-    setNota4 = _useState40[1];
+    nota3 = _useState40[0],
+    setNota3 = _useState40[1];
   var _useState41 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState42 = _slicedToArray(_useState41, 2),
-    nota5 = _useState42[0],
-    setNota5 = _useState42[1];
+    nota4 = _useState42[0],
+    setNota4 = _useState42[1];
   var _useState43 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState44 = _slicedToArray(_useState43, 2),
-    nota6 = _useState44[0],
-    setNota6 = _useState44[1];
+    nota5 = _useState44[0],
+    setNota5 = _useState44[1];
   var _useState45 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState46 = _slicedToArray(_useState45, 2),
-    nota7 = _useState46[0],
-    setNota7 = _useState46[1];
+    nota6 = _useState46[0],
+    setNota6 = _useState46[1];
   var _useState47 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState48 = _slicedToArray(_useState47, 2),
-    nota8 = _useState48[0],
-    setNota8 = _useState48[1];
+    nota7 = _useState48[0],
+    setNota7 = _useState48[1];
   var _useState49 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState50 = _slicedToArray(_useState49, 2),
-    nota9 = _useState50[0],
-    setNota9 = _useState50[1];
+    nota8 = _useState50[0],
+    setNota8 = _useState50[1];
   var _useState51 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState52 = _slicedToArray(_useState51, 2),
-    nota10 = _useState52[0],
-    setNota10 = _useState52[1];
+    nota9 = _useState52[0],
+    setNota9 = _useState52[1];
+  var _useState53 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState54 = _slicedToArray(_useState53, 2),
+    nota10 = _useState54[0],
+    setNota10 = _useState54[1];
 
   //Variáveis para os placeholders
   var consideracao = 'Leve em consideração  a qualidade do trabalho realizado pelo funcionário, sua eficiência, precisão e produtividade.';
@@ -13021,6 +13025,7 @@ function App() {
   //Variável para as validações
   var validacao = 'Favor preencher todos os dados!';
   var mesmoFuncionario = 'Você já cadastrou esse funcionário!';
+  var sucessoCadastro = 'Cadastro realizado com sucesso!';
 
   //Primeira requisição para a recuperação dos dados dos usuários ao inicializar o programa
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
@@ -13084,6 +13089,7 @@ function App() {
           administrador: usuario
         }).then(function (response) {
           console.log('Usuário cadastrado com sucesso:', response.data);
+          setCadastroSucesso(true);
           // Lidar com a resposta do servidor após o cadastro ser realizado com sucesso
         });
         axios.get('/cadastrados').then(function (response) {
@@ -13199,6 +13205,13 @@ function App() {
       handleClose: function handleClose() {
         return setOpenCadastro(false);
       }
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Dialog__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      open: cadastroSucesso,
+      descricao: sucessoCadastro,
+      handleClose: function handleClose() {
+        return setCadastroSucesso(false);
+      },
+      Title: "Cadastro"
     }), "Ol\xE1 ", usuario, ". Seja bem vindo ao programa de feedbacks! Favor escolher uma das op\xE7\xF5es abaixo!", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
       className: "form-select ",
       "aria-label": "Default select example",
@@ -13213,8 +13226,8 @@ function App() {
         value: "funcionario",
         children: "Sistema de feedback"
       })]
-    }), select === 'cadastrar' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+    }), select === 'cadastrar' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "card mt-5",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h5", {
           className: "card-header",
@@ -13283,44 +13296,7 @@ function App() {
             children: "Gravar"
           })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-        className: "modal",
-        tabindex: "-1",
-        role: "dialog",
-        id: "meuModal",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-          className: "modal-dialog",
-          role: "document",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-            className: "modal-content",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-              className: "modal-header",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h5", {
-                className: "modal-title",
-                children: "Alerta"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
-                type: "button",
-                className: "btn-close",
-                "data-bs-dismiss": "modal",
-                "aria-label": "Fechar"
-              })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-              className: "modal-body",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
-                children: validacao
-              })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-              className: "modal-footer",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
-                type: "button",
-                className: "btn btn-secondary",
-                "data-bs-dismiss": "modal",
-                children: "Fechar"
-              })
-            })]
-          })
-        })
-      })]
+      })
     }), select === 'funcionario' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "card mt-5",
@@ -13685,7 +13661,9 @@ function AlertDialog(_ref) {
     descricao = _ref.descricao,
     _ref$open = _ref.open,
     open = _ref$open === void 0 ? false : _ref$open,
-    handleClose = _ref.handleClose;
+    handleClose = _ref.handleClose,
+    _ref$Title = _ref.Title,
+    Title = _ref$Title === void 0 ? 'Atenção' : _ref$Title;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_mui_material_Dialog__WEBPACK_IMPORTED_MODULE_1__["default"], {
       open: open,
@@ -13701,7 +13679,7 @@ function AlertDialog(_ref) {
             width: "30"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {
             className: "ml-3",
-            children: "Atenção"
+            children: Title
           })]
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material_DialogContent__WEBPACK_IMPORTED_MODULE_3__["default"], {
