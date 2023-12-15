@@ -12933,16 +12933,20 @@ function App() {
     _useState26 = _slicedToArray(_useState25, 2),
     cadastroSucesso = _useState26[0],
     setCadastroSucesso = _useState26[1];
-
-  //Variável para o disparo de modal do Material UI
   var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
     _useState28 = _slicedToArray(_useState27, 2),
-    open = _useState28[0],
-    setOpen = _useState28[1];
+    validacaoNotas = _useState28[0],
+    setValidacaoNotas = _useState28[1];
+
+  //Variável para o disparo de modal do Material UI
   var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
     _useState30 = _slicedToArray(_useState29, 2),
-    openCadastro = _useState30[0],
-    setOpenCadastro = _useState30[1];
+    open = _useState30[0],
+    setOpen = _useState30[1];
+  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState32 = _slicedToArray(_useState31, 2),
+    openCadastro = _useState32[0],
+    setOpenCadastro = _useState32[1];
 
   //Configuração do ChartJS
   var data = {
@@ -12961,54 +12965,54 @@ function App() {
   };
 
   //Variáveis para as notas
-  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
-    _useState32 = _slicedToArray(_useState31, 2),
-    nome = _useState32[0],
-    setNome = _useState32[1];
   var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState34 = _slicedToArray(_useState33, 2),
-    email = _useState34[0],
-    setEmail = _useState34[1];
+    nome = _useState34[0],
+    setNome = _useState34[1];
   var _useState35 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState36 = _slicedToArray(_useState35, 2),
-    nota1 = _useState36[0],
-    setNota1 = _useState36[1];
+    email = _useState36[0],
+    setEmail = _useState36[1];
   var _useState37 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState38 = _slicedToArray(_useState37, 2),
-    nota2 = _useState38[0],
-    setNota2 = _useState38[1];
+    nota1 = _useState38[0],
+    setNota1 = _useState38[1];
   var _useState39 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState40 = _slicedToArray(_useState39, 2),
-    nota3 = _useState40[0],
-    setNota3 = _useState40[1];
+    nota2 = _useState40[0],
+    setNota2 = _useState40[1];
   var _useState41 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState42 = _slicedToArray(_useState41, 2),
-    nota4 = _useState42[0],
-    setNota4 = _useState42[1];
+    nota3 = _useState42[0],
+    setNota3 = _useState42[1];
   var _useState43 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState44 = _slicedToArray(_useState43, 2),
-    nota5 = _useState44[0],
-    setNota5 = _useState44[1];
+    nota4 = _useState44[0],
+    setNota4 = _useState44[1];
   var _useState45 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState46 = _slicedToArray(_useState45, 2),
-    nota6 = _useState46[0],
-    setNota6 = _useState46[1];
+    nota5 = _useState46[0],
+    setNota5 = _useState46[1];
   var _useState47 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState48 = _slicedToArray(_useState47, 2),
-    nota7 = _useState48[0],
-    setNota7 = _useState48[1];
+    nota6 = _useState48[0],
+    setNota6 = _useState48[1];
   var _useState49 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState50 = _slicedToArray(_useState49, 2),
-    nota8 = _useState50[0],
-    setNota8 = _useState50[1];
+    nota7 = _useState50[0],
+    setNota7 = _useState50[1];
   var _useState51 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState52 = _slicedToArray(_useState51, 2),
-    nota9 = _useState52[0],
-    setNota9 = _useState52[1];
+    nota8 = _useState52[0],
+    setNota8 = _useState52[1];
   var _useState53 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
     _useState54 = _slicedToArray(_useState53, 2),
-    nota10 = _useState54[0],
-    setNota10 = _useState54[1];
+    nota9 = _useState54[0],
+    setNota9 = _useState54[1];
+  var _useState55 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(''),
+    _useState56 = _slicedToArray(_useState55, 2),
+    nota10 = _useState56[0],
+    setNota10 = _useState56[1];
 
   //Variáveis para os placeholders
   var consideracao = 'Leve em consideração  a qualidade do trabalho realizado pelo funcionário, sua eficiência, precisão e produtividade.';
@@ -13026,6 +13030,7 @@ function App() {
   var validacao = 'Favor preencher todos os dados!';
   var mesmoFuncionario = 'Você já cadastrou esse funcionário!';
   var sucessoCadastro = 'Cadastro realizado com sucesso!';
+  var validacaoNotas2 = 'As notas são de 0 a 10!';
 
   //Primeira requisição para a recuperação dos dados dos usuários ao inicializar o programa
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
@@ -13120,6 +13125,8 @@ function App() {
   function avaliar() {
     if (!nota1 || !nota2 || !nota3 || !nota4 || !nota5 || !nota6 || !nota7 || !nota8 || !nota9 || !nota10 || !selectedDate) {
       setOpen(true);
+    } else if (nota1 > 10 || nota2 > 10 || nota3 > 10 || nota4 > 10 || nota5 > 10 || nota6 > 10 || nota7 > 10 || nota8 > 10 || nota9 > 10 || nota10 > 10) {
+      setValidacaoNotas(true);
     } else {
       var media = (parseInt(nota1) + parseInt(nota2) + parseInt(nota3) + parseInt(nota4) + parseInt(nota5) + parseInt(nota6) + parseInt(nota7) + parseInt(nota8) + parseInt(nota9) + parseInt(nota10)) / 10;
       console.log(mediaFinal);
@@ -13212,6 +13219,13 @@ function App() {
         return setCadastroSucesso(false);
       },
       Title: "Cadastro"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Dialog__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      open: validacaoNotas,
+      descricao: validacaoNotas2,
+      handleClose: function handleClose() {
+        return setValidacaoNotas(false);
+      },
+      Title: "Valida\xE7\xE3o de notas"
     }), "Ol\xE1 ", usuario, ". Seja bem vindo ao programa de feedbacks! Favor escolher uma das op\xE7\xF5es abaixo!", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
       className: "form-select ",
       "aria-label": "Default select example",

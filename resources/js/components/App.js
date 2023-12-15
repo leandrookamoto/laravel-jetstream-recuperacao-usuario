@@ -19,6 +19,7 @@ export default function App() {
     const [idFuncionario, setIdFuncionario] = useState(null);
     const [historico, setHistorico] = useState(false);
     const [cadastroSucesso, setCadastroSucesso] = useState(false);
+    const [validacaoNotas,setValidacaoNotas] = useState(false);
 
 
     //Variável para o disparo de modal do Material UI
@@ -69,6 +70,7 @@ export default function App() {
     const validacao='Favor preencher todos os dados!';
     const mesmoFuncionario = 'Você já cadastrou esse funcionário!';
     const sucessoCadastro = 'Cadastro realizado com sucesso!';
+    const validacaoNotas2 = 'As notas são de 0 a 10!';
 
 
 
@@ -168,6 +170,8 @@ export default function App() {
 
           if(!nota1||!nota2||!nota3||!nota4||!nota5||!nota6||!nota7||!nota8||!nota9||!nota10||!selectedDate){
             setOpen(true);
+          }else if(nota1>10||nota2>10||nota3>10||nota4>10||nota5>10||nota6>10||nota7>10||nota8>10||nota9>10||nota10>10){
+            setValidacaoNotas(true);
           }else{
             const media = (parseInt(nota1)+parseInt(nota2)+parseInt(nota3)+parseInt(nota4)+parseInt(nota5)+parseInt(nota6)+parseInt(nota7)+parseInt(nota8)+parseInt(nota9)+parseInt(nota10))/10;
             console.log(mediaFinal);
@@ -243,6 +247,7 @@ export default function App() {
         <Dialog open={open} descricao={validacao} handleClose={()=>setOpen(false)}/>
         <Dialog open={openCadastro} descricao={mesmoFuncionario} handleClose={()=>setOpenCadastro(false)}/>
         <Dialog open={cadastroSucesso} descricao={sucessoCadastro} handleClose={()=>setCadastroSucesso(false)} Title='Cadastro'/>
+        <Dialog open={validacaoNotas} descricao={validacaoNotas2} handleClose={()=>setValidacaoNotas(false)} Title='Validação de notas'/>
            Olá {usuario}. Seja bem vindo ao programa de feedbacks! Favor escolher uma das opções abaixo!
 
            {/* Seleciona se vai cadastrar ou fazer o feedback */}
