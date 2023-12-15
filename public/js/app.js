@@ -13236,6 +13236,7 @@ function App() {
         setConfirmaApagar(function (confirmaApagar) {
           return !confirmaApagar;
         });
+        setDadosFuncionario([]);
       }));
     }
   }
@@ -13243,6 +13244,10 @@ function App() {
   function confirmacaoApagar() {
     setValidacaoApagar(false);
     setConfirmaApagar(true);
+  }
+  function handleSelect(e) {
+    setSelect(e.currentTarget.value);
+    setDadosFuncionario([]);
   }
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Dialog__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -13279,9 +13284,7 @@ function App() {
     }), "Ol\xE1 ", usuario, ". Seja bem vindo ao programa de feedbacks! Favor escolher uma das op\xE7\xF5es abaixo!", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
       className: "form-select ",
       "aria-label": "Default select example",
-      onChange: function onChange(e) {
-        return setSelect(e.currentTarget.value);
-      },
+      onChange: handleSelect,
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
         value: "cadastrar",
         selected: true,
@@ -13643,9 +13646,16 @@ function App() {
               children: ["Selected Date: ", selectedDate ? formatBrazilianDate(selectedDate) : '']
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
               type: "button",
-              className: "btn btn-primary",
+              className: "mr-3 btn btn-primary ",
               onClick: avaliar,
               children: "Avaliar Profissional"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+              type: "button",
+              className: "btn btn-primary ml-3",
+              onClick: function onClick() {
+                return setFuncionario_selected('false');
+              },
+              children: "Fechar"
             })]
           })]
         }), historico && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
@@ -13654,6 +13664,13 @@ function App() {
             children: "Hist\xF3rico de feedback"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Chart__WEBPACK_IMPORTED_MODULE_2__["default"], {
             data: data
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            type: "button",
+            className: "btn btn-primary ml-3",
+            onClick: function onClick() {
+              return setHistorico(false);
+            },
+            children: "Fechar hist\xF3rico"
           })]
         })]
       })

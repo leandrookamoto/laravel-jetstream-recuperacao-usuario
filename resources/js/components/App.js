@@ -266,6 +266,7 @@ export default function App() {
                 setDadosFuncionario([]);
                 setSelectedFuncionario('Escolha qual funcionário');
                 setConfirmaApagar(confirmaApagar=>!confirmaApagar);
+                setDadosFuncionario([]);
               })
                 );
           
@@ -281,6 +282,12 @@ export default function App() {
           function confirmacaoApagar(){
             setValidacaoApagar(false);
             setConfirmaApagar(true);
+          }
+
+
+          function handleSelect(e){
+            setSelect(e.currentTarget.value);
+            setDadosFuncionario([]);
           }
 
 
@@ -300,7 +307,7 @@ export default function App() {
            Olá {usuario}. Seja bem vindo ao programa de feedbacks! Favor escolher uma das opções abaixo!
 
            {/* Seleciona se vai cadastrar ou fazer o feedback */}
-           <select className="form-select " aria-label="Default select example" onChange={e=>setSelect(e.currentTarget.value)} >
+           <select className="form-select " aria-label="Default select example" onChange={handleSelect} >
                 <option value="cadastrar" selected>Cadastrar funcionário</option>
                 <option value="funcionario">Sistema de feedback</option>
             </select>
@@ -436,11 +443,16 @@ export default function App() {
 
                     <p>Selected Date: {selectedDate?formatBrazilianDate(selectedDate):''}</p>
 
-                    <button type="button" className="btn btn-primary" onClick={avaliar}>Avaliar Profissional</button>
+                    <button type="button" className="mr-3 btn btn-primary "  onClick={avaliar}>Avaliar Profissional</button>
+                    <button type="button" className="btn btn-primary ml-3" onClick={()=>setFuncionario_selected('false')}>Fechar</button>
                     </>
                 }
                 </div>
-                {historico&& <div className='m-3'><h3>Histórico de feedback</h3><Chart data={data}/></div>}
+                {historico&& <div className='m-3'><h3>Histórico de feedback</h3><Chart data={data}/>
+                <button type="button" className="btn btn-primary ml-3" onClick={()=>setHistorico(false)}>Fechar histórico</button>
+                </div>
+                
+                }
             </div>
             
             </>}
