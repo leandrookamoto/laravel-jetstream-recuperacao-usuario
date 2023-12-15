@@ -17,14 +17,17 @@ export default function App() {
     const [newId, setNewId] = useState(0);
     const [selectedDate, setSelectedDate] = useState('');
     const [idFuncionario, setIdFuncionario] = useState(null);
-    const [historico, setHistorico] = useState(false);
-    const [cadastroSucesso, setCadastroSucesso] = useState(false);
-    const [validacaoNotas,setValidacaoNotas] = useState(false);
+    const [confirmaApagar, setConfirmaApagar] = useState(false);
+ 
 
 
     //Variável para o disparo de modal do Material UI
     const [open,setOpen]=useState(false);
     const [openCadastro, setOpenCadastro] = useState(false);
+    const [historico, setHistorico] = useState(false);
+    const [cadastroSucesso, setCadastroSucesso] = useState(false);
+    const [validacaoNotas,setValidacaoNotas] = useState(false);
+    const [validacaoApagar, setValidacaoApagar] = useState(false);
 
     
     //Configuração do ChartJS
@@ -71,6 +74,7 @@ export default function App() {
     const mesmoFuncionario = 'Você já cadastrou esse funcionário!';
     const sucessoCadastro = 'Cadastro realizado com sucesso!';
     const validacaoNotas2 = 'As notas são de 0 a 10!';
+    const validaApagar = 'Tem certeza de apagar o funcionário atual?'
 
 
 
@@ -236,6 +240,21 @@ export default function App() {
             }
           }
 
+          function apagar(){
+            if(!confirmaApagar){
+              setValidacaoApagar(true);
+            }else{
+              setConfirmaApagar(false);
+            }
+          };
+
+          
+
+          function confirmacaoApagar(){
+            setValidacaoApagar(false);
+            setConfirmaApagar(true);
+          }
+
 
    
           
@@ -244,10 +263,12 @@ export default function App() {
 
     return (
         <>
+        {/* Aqui são os Dialogs/Popup para avisos aos usuários */}
         <Dialog open={open} descricao={validacao} handleClose={()=>setOpen(false)}/>
         <Dialog open={openCadastro} descricao={mesmoFuncionario} handleClose={()=>setOpenCadastro(false)}/>
         <Dialog open={cadastroSucesso} descricao={sucessoCadastro} handleClose={()=>setCadastroSucesso(false)} Title='Cadastro'/>
         <Dialog open={validacaoNotas} descricao={validacaoNotas2} handleClose={()=>setValidacaoNotas(false)} Title='Validação de notas'/>
+        <Dialog open={validacaoApagar} descricao={validaApagar} handleClose={confirmacaoApagar} Title='Apagar'/>
            Olá {usuario}. Seja bem vindo ao programa de feedbacks! Favor escolher uma das opções abaixo!
 
            {/* Seleciona se vai cadastrar ou fazer o feedback */}
@@ -323,8 +344,9 @@ export default function App() {
                 </div>)
                 }
                 
-                <button type="button" className="btn btn-primary mt-3" onClick={()=>setFuncionario_selected('true')}>Avaliar</button>
+                    <button type="button" className="btn btn-primary mt-3" onClick={()=>setFuncionario_selected('true')}>Avaliar</button>
                     <button type="button" className="btn btn-primary ml-3 mt-3" onClick={()=>setHistorico(true)}>Histórico</button>
+                    <button type="button" className="btn btn-primary ml-3 mt-3" onClick={apagar}>Apagar</button>
                 </>}
 
                 {funcionario_selected==='true'&&
